@@ -1,0 +1,45 @@
+.shelter-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.shelter-table {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 1rem auto;
+  border-collapse: collapse;
+  background: #f8fafc;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px #0001;
+  overflow: hidden;
+}
+.shelter-table th, .shelter-table td {
+  padding: 0.8rem 1.2rem;
+  text-align: left;
+}
+.shelter-table th {
+  background: #e0e7ef;
+  color: #1d4ed8;
+  font-size: 1.08rem;
+}
+.shelter-table tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+.shelter-status {
+  padding: 0.2rem 0.7rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: #fff;
+}
+.shelter-status.open {
+  background: #22c55e;
+}
+.shelter-status.full {
+  background: #dc2626;
+}
+.shelter-note {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.98rem;
+  margin-top: 0.5rem;
+}

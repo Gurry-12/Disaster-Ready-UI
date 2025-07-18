@@ -1,0 +1,38 @@
+.analytics-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.analytics-filters {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.analytics-filters select {
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+.analytics-heatmap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: linear-gradient(135deg, #e0e7ef 60%, #f1f5f9 100%);
+  border-radius: 12px;
+  box-shadow: 0 1px 6px #0001;
+  margin-bottom: 1rem;
+}
+.heatmap-placeholder {
+  color: #64748b;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+.analytics-note {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.98rem;
+  margin-top: 0.5rem;
+}
