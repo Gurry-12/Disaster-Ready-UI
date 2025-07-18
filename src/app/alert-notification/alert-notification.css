@@ -1,0 +1,27 @@
+.alert-container {
+  background: linear-gradient(135deg, #fbc2eb 0%, #b6e0fe 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.10);
+  padding: 1rem;
+  margin-bottom: 0.7rem;
+}
+.alert-info, .alert-warning, .alert-error {
+  padding: 0.7rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+.alert-info {
+  background: #e3eafc;
+  color: #2563eb;
+  border-left: 4px solid #2563eb;
+}
+.alert-warning {
+  background: #fff7e6;
+  color: #f59e42;
+  border-left: 4px solid #f59e42;
+}
+.alert-error {
+  background: #ffe0f7;
+  color: #d32f2f;
+  border-left: 4px solid #d32f2f;
+}

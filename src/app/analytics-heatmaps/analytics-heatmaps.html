@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="analytics-header">
+    <h2>Analytics & Heatmaps</h2>
+    <p>Visualize high-risk zones, past incidents, and vulnerable regions using interactive heatmaps.</p>
+  </div>
+  <div class="analytics-filters">
+    <label>Filter by:
+      <select>
+        <option>Disaster Type</option>
+        <option>Date</option>
+        <option>Severity</option>
+        <option>Region</option>
+      </select>
+    </label>
+  </div>
+  <div class="analytics-chart">
+    <canvas baseChart
+      [data]="barChartData"
+      [options]="barChartOptions"
+      [type]="barChartType">
+    </canvas>
+  </div>
+  <div class="analytics-heatmap">
+    <div class="heatmap-placeholder">[Heatmap Placeholder: Flood risk high in Zone 3]</div>
+  </div>
+  <p class="analytics-note">[Interactive analytics coming soon]</p>
+</div>

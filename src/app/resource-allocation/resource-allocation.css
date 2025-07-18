@@ -1,0 +1,33 @@
+.resource-container {
+  background: linear-gradient(135deg, #b6e0fe 0%, #fbc2eb 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.10);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.resource-title {
+  color: #6d5b97;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+  background: #f6f7fb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid #e0e7ef;
+  text-align: left;
+}
+th {
+  background: #e3eafc;
+  color: #2563eb;
+}
+tr:last-child td {
+  border-bottom: none;
+}

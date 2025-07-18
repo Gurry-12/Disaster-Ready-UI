@@ -1,0 +1,48 @@
+.incident-form {
+  background: linear-gradient(135deg, #fbc2eb 0%, #b6e0fe 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.10);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.incident-form label {
+  font-weight: 500;
+  color: #6d5b97;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+.incident-form input, .incident-form select, .incident-form textarea {
+  width: 100%;
+  margin-bottom: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #e0e7ef;
+  padding: 0.3rem;
+  background: #f6f7fb;
+}
+.incident-form button {
+  margin-top: 0.5rem;
+  background: #b6e0fe;
+  color: #3b3b5c;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.incident-form button:hover {
+  background: #fbc2eb;
+}
+.incident-list {
+  background: #f6f7fb;
+  border-radius: 8px;
+  padding: 0.7rem;
+}
+.incident-item {
+  background: #ffe0f7;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(186, 104, 200, 0.06);
+  padding: 0.7rem;
+  margin-bottom: 0.5rem;
+  color: #6d5b97;
+}

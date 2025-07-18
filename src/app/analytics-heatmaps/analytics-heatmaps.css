@@ -1,0 +1,36 @@
+.analytics-header {
+  background: linear-gradient(135deg, #fbc2eb 0%, #b6e0fe 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.10);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.analytics-header h2 {
+  color: #6d5b97;
+  margin-bottom: 0.3rem;
+}
+.analytics-filters {
+  margin-bottom: 1rem;
+}
+.analytics-filters label {
+  font-weight: 500;
+  color: #6d5b97;
+}
+.analytics-chart {
+  background: #f6f7fb;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.06);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.analytics-heatmap {
+  background: #e3eafc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.analytics-note {
+  color: #757575;
+  font-size: 0.95rem;
+  text-align: center;
+}
