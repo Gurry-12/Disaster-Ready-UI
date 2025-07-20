@@ -1,0 +1,39 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2>Welcome Back 👋</h2>
+    <p>Please enter your credentials to log in.</p>
+
+    <form (ngSubmit)="onLogin()" novalidate>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          placeholder="you@example.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <button type="submit" class="auth-btn">Login</button>
+    </form>
+
+    <p class="signup-redirect">
+      Don't have an account?
+      <a routerLink="/pages/signup/Signup" routerLinkActive="active">Sign up</a>
+    </p>
+  </div>
+</div>

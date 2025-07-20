@@ -1,24 +1,40 @@
-<div class="container">
-  <div class="dashboard-cards">
-    <div class="dashboard-card">
-      <div class="dashboard-title">Active Incidents</div>
-      <div class="dashboard-value">7</div>
-      <div class="dashboard-description">Incidents reported in the last 24 hours</div>
+<div class="dashboard-container">
+  <h1 class="dashboard-title">Disaster Response Dashboard</h1>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Active Incidents</h3>
+      <p class="value">7</p>
+      <p class="description">Reported in the last 24 hours</p>
     </div>
-    <div class="dashboard-card">
-      <div class="dashboard-title">Resources Available</div>
-      <div class="dashboard-value">1,200</div>
-      <div class="dashboard-description">Total units of food, water, and medical supplies</div>
+
+    <div class="card">
+      <h3>Resources Available</h3>
+      <p class="value">1,200</p>
+      <p class="description">Units of food, water, and medicine</p>
     </div>
-    <div class="dashboard-card">
-      <div class="dashboard-title">Shelters Open</div>
-      <div class="dashboard-value">5</div>
-      <div class="dashboard-description">Shelters currently operational</div>
+
+    <div class="card">
+      <h3>Shelters Open</h3>
+      <p class="value">5</p>
+      <p class="description">Operational across zones</p>
     </div>
-    <div class="dashboard-card">
-      <div class="dashboard-title">Active Alerts</div>
-      <div class="dashboard-value">2</div>
-      <div class="dashboard-description">Critical alerts requiring attention</div>
+
+    <div class="card">
+      <h3>Active Alerts</h3>
+      <p class="value alert">2</p>
+      <p class="description">Critical warnings in effect</p>
     </div>
   </div>
+
+  <div class="alert-banner warning">
+    ⚠️ Heavy rainfall expected in Zone 2
+  </div>
+
+  <div class="chart-placeholder">
+    <!-- You can plug in Chart.js or Leaflet here later -->
+    <p>📊 Data Visualizations Coming Soon...</p>
+  </div>
+
+  <p class="last-updated">Last updated: July 19, 2025, 04:30 PM</p>
 </div>

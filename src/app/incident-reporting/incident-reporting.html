@@ -1,21 +1,29 @@
 <div class="container">
   <form class="incident-form">
+    <h2>Report an Incident</h2>
+
     <label for="type">Incident Type</label>
-    <select id="type">
+    <select id="type" required>
+      <option disabled selected>Select Type</option>
       <option>Flood</option>
       <option>Fire</option>
       <option>Earthquake</option>
       <option>Storm</option>
+      <option>Landslide</option>
     </select>
+
     <label for="desc">Description</label>
-    <textarea id="desc" rows="3"></textarea>
+    <textarea id="desc" rows="3" placeholder="Describe the incident..." required></textarea>
+
     <button type="submit">Report Incident</button>
   </form>
+
   <div class="incident-list">
-    <div class="incident-item">Flood reported in Zone 3</div>
-    <div class="incident-item">Fire reported in Zone 1</div>
-    <div class="incident-item">Earthquake detected in Zone 5</div>
-    <div class="incident-item">Storm warning issued for Zone 2</div>
-    <div class="incident-item">Landslide reported in Zone 6</div>
+    <h2>Recent Incidents</h2>
+    <div class="incident-item flood">🌊 Flood reported in Zone 3</div>
+    <div class="incident-item fire">🔥 Fire reported in Zone 1</div>
+    <div class="incident-item earthquake">🌍 Earthquake detected in Zone 5</div>
+    <div class="incident-item storm">⛈️ Storm warning issued for Zone 2</div>
+    <div class="incident-item landslide">🏔️ Landslide reported in Zone 6</div>
   </div>
 </div>

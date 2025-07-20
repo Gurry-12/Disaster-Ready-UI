@@ -4,9 +4,13 @@ import { LiveDisasterMap } from './live-disaster-map/live-disaster-map';
 import { AlertNotification } from './alert-notification/alert-notification';
 import { IncidentReporting } from './incident-reporting/incident-reporting';
 import { ResourceAllocation } from './resource-allocation/resource-allocation';
+import { ResourceOverview } from './resource-overview/resource-overview';
 import { PeopleShelterManagement } from './people-shelter-management/people-shelter-management';
 import { AnalyticsHeatmaps } from './analytics-heatmaps/analytics-heatmaps';
 import { CalendarComponent } from './calendar/calendar';
+import { CustomizeKit } from './customize-kit/customize-kit';
+import { Login } from './pages/login/login';
+import { Signup } from './pages/signup/signup';
 
 export const routes: Routes = [
   { path: '', component: Dashboard },
@@ -15,7 +19,11 @@ export const routes: Routes = [
   { path: 'alert-notification', component: AlertNotification },
   { path: 'incident-reporting', component: IncidentReporting },
   { path: 'resource-allocation', component: ResourceAllocation },
+  { path: 'resource-overview', component: ResourceOverview },
   { path: 'people-shelter-management', component: PeopleShelterManagement },
   { path: 'analytics-heatmaps', component: AnalyticsHeatmaps },
   { path: 'calendar', component: CalendarComponent },
+  { path: 'customize-kit', component: CustomizeKit },
+  { path: 'login', component: Login },
+  { path: 'signup', component: Signup }
 ];

@@ -1,7 +1,7 @@
 @import "leaflet/dist/leaflet.css";
 /* You can add global styles to this file, and also import other style files */
 
-.container {
+/* .container {
   width: inherit;
 
   background: linear-gradient(135deg, #fbc2eb 0%, #b6e0fe 100%);
@@ -13,4 +13,10 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+} */
+
+
+* {
+ 
+  box-sizing: border-box;
 }

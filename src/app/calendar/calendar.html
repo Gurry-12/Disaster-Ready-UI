@@ -1,32 +1,44 @@
-<div class="container">
-  <div class="calendar-container">
-    <div class="calendar-header">
-      <button (click)="prevMonth()">&#8592;</button>
-      <span>{{ monthNames[currentMonth] }} {{ currentYear }}</span>
-      <button (click)="nextMonth()">&#8594;</button>
+<div class="calendar-container">
+  <div class="calendar-header">
+    <button (click)="setView('month')">Month</button>
+    <button (click)="setView('week')">Week</button>
+    <button (click)="setView('day')">Day</button>
+    <h3>{{ selectedDate() | date: 'fullDate' }}</h3>
+  </div>
+
+  <!-- DAY VIEW -->
+  <div *ngIf="selectedView() === 'day'" class="day-view">
+    <div *ngFor="let time of dayTimeSlots" class="time-slot">
+      {{ time }}
     </div>
-    <div class="calendar-grid">
-      <div class="calendar-day" *ngFor="let day of weekDays">{{ day }}</div>
-      <div class="calendar-date"
-           *ngFor="let date of calendarDates"
-           [class.selected]="isSelectedDate(date)"
-           [class.has-event]="hasEvent(date)"
-           (click)="selectDate(date)">
-        {{ date.getDate() }}
-      </div>
+  </div>
+
+  <!-- WEEK VIEW -->
+  <div *ngIf="selectedView() === 'week'" class="week-view">
+    <div class="week-day" *ngFor="let day of displayedWeekDays()">{{ day }}</div>
+    <div
+      class="calendar-date"
+      *ngFor="let date of displayedDates()"
+      (click)="selectDate(date)"
+      [class.selected]="date.toDateString() === selectedDate().toDateString()"
+    >
+      {{ date.getDate() }}
     </div>
-    <div class="calendar-events">
-      <h3>Events on {{ selectedDate | date:'fullDate' }}</h3>
-      <ul>
-        <li *ngFor="let event of events[selectedDateString]">
-          <span [style.background]="event.color" class="event-dot"></span>
-          {{ event.title }}
-        </li>
-      </ul>
-      <div class="add-event">
-        <input type="text" placeholder="Add event..." [(ngModel)]="newEventTitle">
-        <button (click)="addEvent()">Add</button>
-      </div>
-    </div>
+  </div>
+
+  <!-- EVENTS -->
+  <div class="events">
+    <h3>Events on {{ selectedDate() | date: 'fullDate' }}</h3>
+    <ul>
+      <li *ngFor="let e of getEventsForSelectedDate()" [style.color]="e.color">
+        {{ e.title }} ({{ e.date | date: 'shortTime' }})
+      </li>
+    </ul>
+
+    <input type="text" [(ngModel)]="newEventTitle" placeholder="Event title" />
+    <select [(ngModel)]="newEventColor">
+      <option *ngFor="let c of colors" [value]="c">{{ c }}</option>
+    </select>
+    <button (click)="addEvent()">Add Event</button>
   </div>
 </div>

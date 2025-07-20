@@ -1,0 +1,15 @@
+<div class="auth-container">
+  <h2>Signup</h2>
+  <form (ngSubmit)="onSignup()">
+    <label>Name:</label>
+    <input type="text" [(ngModel)]="name" name="name" required />
+
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="email" name="email" required />
+
+    <label>Password:</label>
+    <input type="password" [(ngModel)]="password" name="password" required />
+
+    <button type="submit">Sign Up</button>
+  </form>
+</div>

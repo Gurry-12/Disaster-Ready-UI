@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration, ChartType, ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-analytics-heatmaps',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, NgChartsModule],
   templateUrl: './analytics-heatmaps.html',
   styleUrls: ['./analytics-heatmaps.css']
 })

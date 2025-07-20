@@ -1,48 +1,95 @@
-.incident-form {
-  background: linear-gradient(135deg, #fbc2eb 0%, #b6e0fe 100%);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.10);
-  padding: 1rem;
+.container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+h2 {
   margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #222;
 }
-.incident-form label {
-  font-weight: 500;
-  color: #6d5b97;
-  margin-bottom: 0.3rem;
-  display: block;
-}
-.incident-form input, .incident-form select, .incident-form textarea {
-  width: 100%;
-  margin-bottom: 0.7rem;
-  border-radius: 6px;
-  border: 1px solid #e0e7ef;
-  padding: 0.3rem;
-  background: #f6f7fb;
-}
-.incident-form button {
-  margin-top: 0.5rem;
-  background: #b6e0fe;
-  color: #3b3b5c;
-  border: none;
-  border-radius: 6px;
-  padding: 0.3rem 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.incident-form button:hover {
-  background: #fbc2eb;
-}
-.incident-list {
-  background: #f6f7fb;
+
+.incident-form {
+  background: #f9f9f9;
   border-radius: 8px;
-  padding: 0.7rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
 }
-.incident-item {
-  background: #ffe0f7;
+
+.incident-form label {
+  display: block;
+  margin: 0.75rem 0 0.4rem;
+  font-weight: 500;
+}
+
+.incident-form select,
+.incident-form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(186, 104, 200, 0.06);
-  padding: 0.7rem;
-  margin-bottom: 0.5rem;
-  color: #6d5b97;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.incident-form button {
+  margin-top: 1rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.incident-form button:hover {
+  background-color: #135ba1;
+}
+
+.incident-list {
+  padding: 1.2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.incident-item {
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.6rem;
+  border-left: 5px solid #ddd;
+  background-color: #f4f4f4;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+/* Optional: Color code by incident type */
+.incident-item.flood {
+  border-left-color: #2196f3;
+  background-color: #e3f2fd;
+}
+
+.incident-item.fire {
+  border-left-color: #f44336;
+  background-color: #ffebee;
+}
+
+.incident-item.earthquake {
+  border-left-color: #9c27b0;
+  background-color: #f3e5f5;
+}
+
+.incident-item.storm {
+  border-left-color: #ff9800;
+  background-color: #fff3e0;
+}
+
+.incident-item.landslide {
+  border-left-color: #4caf50;
+  background-color: #e8f5e9;
 }

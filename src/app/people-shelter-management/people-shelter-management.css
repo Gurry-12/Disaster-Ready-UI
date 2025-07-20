@@ -1,33 +1,208 @@
-.shelter-container {
-  background: linear-gradient(135deg, #b6e0fe 0%, #fbc2eb 100%);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(186, 104, 200, 0.10);
+/* General Container */
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
   padding: 1rem;
-  margin-bottom: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
 }
-.shelter-title {
-  color: #6d5b97;
-  font-size: 1.1rem;
+
+/* Section Base Styles */
+.shelter-container,
+.people-container {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2.5rem;
+}
+
+/* Section Titles */
+.shelter-title,
+.people-title {
+  font-size: 1.6rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.2rem;
+  border-left: 4px solid #1976d2;
+  padding-left: 0.5rem;
+  color: #1976d2;
 }
-table {
+
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Shelter Table */
+.shelter-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 0.5rem;
-  background: #f6f7fb;
-  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.shelter-table th,
+.shelter-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.shelter-table th {
+  background: #f4f6f8;
+  font-weight: 600;
+  color: #555;
+}
+
+.badge {
+  padding: 0.35em 0.7em;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.badge.open {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.full {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.badge.closed {
+  background: #eceff1;
+  color: #546e7a;
+}
+
+/* Progress Bar */
+.progress-bar {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  height: 8px;
+  width: 100%;
   overflow: hidden;
 }
-th, td {
-  padding: 0.5rem 0.7rem;
-  border-bottom: 1px solid #e0e7ef;
-  text-align: left;
+
+.progress-bar div {
+  height: 100%;
+  background-color: #42a5f5;
+  border-radius: 10px;
+  transition: width 0.4s ease-in-out;
 }
-th {
-  background: #e3eafc;
-  color: #2563eb;
+
+/* People List */
+.people-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
 }
-tr:last-child td {
-  border-bottom: none;
+
+/* Individual Card */
+.person-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s;
+}
+
+.person-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Photo Styling */
+.person-photo {
+  padding:  0.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1976d2;
+}
+
+/* Text Info */
+.person-info h4 {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.status.safe {
+  color: green;
+}
+
+.status.injured {
+  color: orange;
+}
+
+.status.missing {
+  color: red;
+}
+
+/* Add Person Form */
+.add-person h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #1976d2;
+}
+
+.add-person form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 400px;
+}
+
+.add-person input,
+.add-person select {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.add-person input:focus,
+.add-person select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+/* Submit Button */
+.add-person button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.add-person button:hover {
+  background-color: #125ea9;
+}
+
+.add-person button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.success-message {
+  margin-top: 1rem;
+  color: green;
+  font-weight: 500;
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: red;
+  font-weight: 500;
 }

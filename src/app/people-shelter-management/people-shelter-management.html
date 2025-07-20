@@ -1,13 +1,85 @@
 <div class="container">
+  <!-- SHELTER OVERVIEW SECTION -->
   <div class="shelter-container">
     <div class="shelter-title">Shelter Overview</div>
-    <table>
-      <tr><th>Name</th><th>Status</th><th>Capacity</th></tr>
-      <tr><td>Central Shelter</td><td>Open</td><td>120/200</td></tr>
-      <tr><td>West Shelter</td><td>Full</td><td>200/200</td></tr>
-      <tr><td>East Shelter</td><td>Open</td><td>80/150</td></tr>
-      <tr><td>North Shelter</td><td>Closed</td><td>0/100</td></tr>
-      <tr><td>South Shelter</td><td>Open</td><td>60/120</td></tr>
-    </table>
+    <div class="table-wrapper">
+      <table class="shelter-table">
+        <thead>
+          <tr>
+            <th>Shelter Name</th>
+            <th>Status</th>
+            <th>Capacity</th>
+            <th>Occupancy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Central Shelter</td>
+            <td><span class="badge open">Open</span></td>
+            <td>120/200</td>
+            <td><div class="progress-bar"><div style="width: 60%"></div></div></td>
+          </tr>
+          <tr>
+            <td>West Shelter</td>
+            <td><span class="badge full">Full</span></td>
+            <td>200/200</td>
+            <td><div class="progress-bar"><div style="width: 100%"></div></div></td>
+          </tr>
+          <tr>
+            <td>East Shelter</td>
+            <td><span class="badge open">Open</span></td>
+            <td>80/150</td>
+            <td><div class="progress-bar"><div style="width: 53.3%"></div></div></td>
+          </tr>
+          <tr>
+            <td>North Shelter</td>
+            <td><span class="badge closed">Closed</span></td>
+            <td>0/100</td>
+            <td><div class="progress-bar"><div style="width: 0%"></div></div></td>
+          </tr>
+          <tr>
+            <td>South Shelter</td>
+            <td><span class="badge open">Open</span></td>
+            <td>60/120</td>
+            <td><div class="progress-bar"><div style="width: 50%"></div></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PEOPLE IN SHELTERS SECTION -->
+  <div class="people-container">
+    <div class="people-title">People in Shelters</div>
+
+    <div class="people-list">
+      <div class="person-card" *ngFor="let person of people">
+        <img [src]="person.photo" alt="{{ person.name }}" class="person-photo">
+        <div class="person-info">
+          <h4>{{ person.name }}</h4>
+          <p>Age: {{ person.age }}</p>
+          <p>Status: <span class="status" [ngClass]="person.status">{{ person.status }}</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD NEW PERSON FORM -->
+    <div class="add-person">
+      <h3>Add New Person</h3>
+      <form (ngSubmit)="addPerson()" #personForm="ngForm">
+        <input type="text" [(ngModel)]="newPerson.name" name="name" placeholder="Name" required>
+        <input type="number" [(ngModel)]="newPerson.age" name="age" placeholder="Age" required>
+        <select [(ngModel)]="newPerson.status" name="status" required>
+          <option disabled selected value="">Status</option>
+          <option value="safe">Safe</option>
+          <option value="missing">Missing</option>
+          <option value="injured">Injured</option>
+        </select>
+        <button type="submit" [disabled]="personForm.invalid">Add Person</button>
+      </form>
+
+      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
   </div>
 </div>

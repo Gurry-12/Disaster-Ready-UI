@@ -1,0 +1,34 @@
+<div class="kit-container">
+  <h2>Customize Your Go-Bag</h2>
+
+  <form class="filter-form">
+    <label>Disaster Type:
+      <select [(ngModel)]="selectedDisaster" name="disaster">
+        <option *ngFor="let type of disasterTypes" [value]="type">{{ type }}</option>
+      </select>
+    </label>
+
+    <label>Family Size:
+      <input type="number" [(ngModel)]="familySize" name="familySize" min="1" />
+    </label>
+
+    <label>
+      <input type="checkbox" [(ngModel)]="hasPets" name="hasPets" /> Include Pet Supplies
+    </label>
+
+    <label>
+      <input type="checkbox" [(ngModel)]="hasMedicalNeeds" name="hasMedicalNeeds" /> Include Medical Supplies
+    </label>
+
+    <button type="button" (click)="generateChecklist()">Generate Checklist</button>
+  </form>
+
+  <div *ngIf="customChecklist.length > 0" class="checklist">
+    <h3>Your Emergency Kit:</h3>
+    <ul>
+      <li *ngFor="let item of customChecklist">
+        <input type="checkbox" /> {{ item.name }} (x{{ item.quantity }})
+      </li>
+    </ul>
+  </div>
+</div>
