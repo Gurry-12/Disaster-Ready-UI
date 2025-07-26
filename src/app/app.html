@@ -1,25 +1,35 @@
-<div class="layout">
-  <aside class="sidebar">
-    <div class="sidebar-title">Disaster Ready</div>
-    <nav>
-      <ul>
-        <li><a [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a></li>
-        <li><a [routerLink]="['/live-disaster-map']" routerLinkActive="active">Live Disaster Map</a></li>
-        <li><a [routerLink]="['/alert-notification']" routerLinkActive="active">Alerts & Notifications</a></li>
-        <li><a [routerLink]="['/incident-reporting']" routerLinkActive="active">Incident Reporting</a></li>
-        <li><a [routerLink]="['/resource-allocation']" routerLinkActive="active">Resource Allocation</a></li>
-        <li><a [routerLink]="['/resource-overview']" routerLinkActive="active">Resource Overview</a></li>
-        <li><a [routerLink]="['/people-shelter-management']" routerLinkActive="active">People & Shelter Management</a></li>
-        <li><a [routerLink]="['/analytics-heatmaps']" routerLinkActive="active">Analytics & Heatmaps</a></li>
-        <li><a [routerLink]="['/calendar']">Calendar</a></li>
-        <li><a [routerLink]="['/customize-kit']" routerLinkActive="active">Customize Kit</a></li>
-        <li><a [routerLink]="['/login']" routerLinkActive="active">Login</a></li>
-        <li><a [routerLink]="['/signup']" routerLinkActive="active">Signup</a></li>
-      </ul>
-    </nav>
-  </aside>
-  <div class="base-container">
-    <h1>Disaster Ready</h1>
-    <router-outlet></router-outlet>
+<div class="app-container">
+  <!-- Navbar for all pages -->
+  <app-navbar></app-navbar>
+
+  <!-- Main content area -->
+  <div class="main-content">
+    <!-- Sidebar - only show for authenticated users -->
+    <aside class="sidebar" *ngIf="isAuthenticated">
+      <div class="sidebar-title">Disaster Ready</div>
+      <nav>
+        <ul>
+          <li><a [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a></li>
+          <li><a [routerLink]="['/live-disaster-map']" routerLinkActive="active">Live Disaster Map</a></li>
+          <li><a [routerLink]="['/alert-notification']" routerLinkActive="active">Alerts & Notifications</a></li>
+          <li><a [routerLink]="['/incident-reporting']" routerLinkActive="active">Incident Reporting</a></li>
+          <li><a [routerLink]="['/resource-allocation']" routerLinkActive="active">Resource Allocation</a></li>
+          <li><a [routerLink]="['/resource-overview']" routerLinkActive="active">Resource Overview</a></li>
+          <li><a [routerLink]="['/people-shelter-management']" routerLinkActive="active">People & Shelter Management</a></li>
+          <li><a [routerLink]="['/analytics-heatmaps']" routerLinkActive="active">Analytics & Heatmaps</a></li>
+          <li><a [routerLink]="['/calendar']" routerLinkActive="active">Calendar</a></li>
+          <li><a [routerLink]="['/customize-kit']" routerLinkActive="active">Customize Kit</a></li>
+          <li><a [routerLink]="['/disaster-report-form']" routerLinkActive="active">Report Form</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Content area -->
+    <div class="content-area" [class.with-sidebar]="isAuthenticated">
+      <router-outlet></router-outlet>
+    </div>
   </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
 </div>

@@ -1,4 +1,35 @@
+<!-- live-disaster-map.html -->
 <div class="live-map-container">
-  <h2>Live Disaster Map</h2>
-  <div id="map" class="leaflet-map"></div>
+  <h2>🌍 Live Disaster Map</h2>
+  <p class="map-subtitle">Real-time incident tracking across India</p>
+  
+  <div class="map-controls">
+    <button (click)="filterMarkers('all')" class="control-btn all">All Disasters</button>
+    <button (click)="filterMarkers('flood')" class="control-btn flood">Floods</button>
+    <button (click)="filterMarkers('fire')" class="control-btn fire">Fires</button>
+    <button (click)="filterMarkers('earthquake')" class="control-btn earthquake">Earthquakes</button>
+    <button (click)="filterMarkers('cyclone')" class="control-btn cyclone">Cyclones</button>
+  </div>
+  
+  <div *ngIf="!apiLoaded" class="loading-map">Loading map...</div>
+  
+  <google-map
+    *ngIf="apiLoaded"
+    height="500px"
+    width="100%"
+    [center]="center"
+    [zoom]="zoom"
+    [options]="options"
+    class="google-map">
+    
+    <map-marker
+      *ngFor="let disaster of disasters"
+      [position]="disaster.position"
+      [options]="disaster.options"
+      (mapClick)="openInfoWindow(marker, disaster)"
+      #marker>
+    </map-marker>
+    
+    <map-info-window>{{ activeInfoContent }}</map-info-window>
+  </google-map>
 </div>

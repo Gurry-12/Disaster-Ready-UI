@@ -1,0 +1,59 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <h1 class="navbar-title">🌐 Disaster Ready</h1>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" routerLink="/dashboard" routerLinkActive="active">
+        <i class="bi bi-house"></i>
+        Dashboard
+      </a>
+      <a class="navbar-item" routerLink="/live-disaster-map" routerLinkActive="active">
+        <i class="bi bi-geo-alt"></i>
+        Live Map
+      </a>
+      <a class="navbar-item" routerLink="/alert-notification" routerLinkActive="active">
+        <i class="bi bi-bell"></i>
+        Alerts
+      </a>
+      <a class="navbar-item" routerLink="/incident-reporting" routerLinkActive="active">
+        <i class="bi bi-exclamation-triangle"></i>
+        Report
+      </a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item has-dropdown" [class.is-active]="isMenuOpen">
+        <a class="navbar-link" (click)="toggleMenu()">
+          <i class="bi bi-person-circle"></i>
+          <span *ngIf="currentUser">{{ currentUser.name }}</span>
+          <span *ngIf="!currentUser">Guest</span>
+          <i class="bi bi-chevron-down"></i>
+        </a>
+
+        <div class="navbar-dropdown" [class.is-active]="isMenuOpen">
+          <a class="navbar-item" (click)="goToProfile()">
+            <i class="bi bi-person"></i>
+            Profile
+          </a>
+          <a class="navbar-item" (click)="goToDashboard()">
+            <i class="bi bi-house"></i>
+            Dashboard
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="navbar-burger" [class.is-active]="isMenuOpen" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav> 

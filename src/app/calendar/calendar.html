@@ -1,44 +1,186 @@
-<div class="calendar-container">
+<div class="calendar-card">
   <div class="calendar-header">
-    <button (click)="setView('month')">Month</button>
-    <button (click)="setView('week')">Week</button>
-    <button (click)="setView('day')">Day</button>
-    <h3>{{ selectedDate() | date: 'fullDate' }}</h3>
+    <div class="calendar-navigation">
+      <button class="nav-btn" (click)="previousPeriod()">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button class="nav-btn today-btn" (click)="goToToday()">Today</button>
+      <button class="nav-btn" (click)="nextPeriod()">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+    
+    <h2 class="calendar-title">
+      <span *ngIf="selectedView() === 'month'">{{ selectedDate() | date: 'MMMM yyyy' }}</span>
+      <span *ngIf="selectedView() === 'week'">{{ displayedWeekDates()[0] | date: 'MMM d' }} - {{ displayedWeekDates()[6] | date: 'MMM d, yyyy' }}</span>
+      <span *ngIf="selectedView() === 'year'">{{ selectedDate() | date: 'yyyy' }}</span>
+      <span *ngIf="selectedView() === 'day'">{{ selectedDate() | date: 'fullDate' }}</span>
+    </h2>
+    
+    <div class="calendar-view-toggle">
+      <button [class.active]="selectedView() === 'month'" (click)="setView('month')">Month</button>
+      <button [class.active]="selectedView() === 'week'" (click)="setView('week')">Week</button>
+      <button [class.active]="selectedView() === 'year'" (click)="setView('year')">Year</button>
+      <button [class.active]="selectedView() === 'day'" (click)="setView('day')">Day</button>
+    </div>
   </div>
 
-  <!-- DAY VIEW -->
-  <div *ngIf="selectedView() === 'day'" class="day-view">
-    <div *ngFor="let time of dayTimeSlots" class="time-slot">
-      {{ time }}
+  <!-- MONTH VIEW -->
+  <div *ngIf="selectedView() === 'month'" class="calendar-month-view">
+    <div class="calendar-week-days">
+      <div class="calendar-week-day" *ngFor="let day of displayedWeekDays()">{{ day }}</div>
+    </div>
+    <div class="calendar-month-grid">
+      <div
+        class="calendar-month-day"
+        *ngFor="let date of displayedMonthDays()"
+        (click)="selectDate(date)"
+        [class.selected]="date.toDateString() === selectedDate().toDateString()"
+        [class.today]="isToday(date)"
+        [class.other-month]="!isCurrentMonth(date)"
+      >
+        <span class="day-number">{{ date.getDate() }}</span>
+        <div class="day-events">
+          <div 
+            *ngFor="let event of getDayEvents(date)" 
+            class="day-event"
+            [style.background]="event.color"
+            [title]="event.title"
+          ></div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- WEEK VIEW -->
-  <div *ngIf="selectedView() === 'week'" class="week-view">
-    <div class="week-day" *ngFor="let day of displayedWeekDays()">{{ day }}</div>
-    <div
-      class="calendar-date"
-      *ngFor="let date of displayedDates()"
-      (click)="selectDate(date)"
-      [class.selected]="date.toDateString() === selectedDate().toDateString()"
-    >
-      {{ date.getDate() }}
+  <div *ngIf="selectedView() === 'week'" class="calendar-week-view">
+    <div class="calendar-week-header">
+      <div class="time-column"></div>
+      <div class="week-day-header" *ngFor="let date of displayedWeekDates()">
+        <div class="week-day-name">{{ date | date: 'EEE' }}</div>
+        <div class="week-day-date" [class.today]="isToday(date)">{{ date.getDate() }}</div>
+      </div>
+    </div>
+    <div class="calendar-week-grid">
+      <div class="time-column">
+        <div class="time-slot" *ngFor="let time of dayTimeSlots.slice(8, 20)">
+          {{ time }}
+        </div>
+      </div>
+      <div class="week-day-column" *ngFor="let date of displayedWeekDates()">
+        <div class="week-day-cell" *ngFor="let time of dayTimeSlots.slice(8, 20)">
+          <div 
+            *ngFor="let event of getEventsForDate(date)" 
+            class="week-event"
+            [style.background]="event.color"
+            [title]="event.title + ' (' + event.startTime + ')'"
+          >
+            {{ event.title }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- EVENTS -->
-  <div class="events">
-    <h3>Events on {{ selectedDate() | date: 'fullDate' }}</h3>
-    <ul>
+  <!-- YEAR VIEW -->
+  <div *ngIf="selectedView() === 'year'" class="calendar-year-view">
+    <div class="calendar-year-grid">
+      <div 
+        class="calendar-year-month" 
+        *ngFor="let month of displayedYearMonths()"
+        (click)="selectDate(month); setView('month')"
+      >
+        <div class="year-month-header">{{ getMonthName(month) }}</div>
+        <div class="year-month-days">
+          <div 
+            *ngFor="let day of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]"
+            class="year-day"
+            [class.valid-day]="isValidDayInMonth(day, month)"
+          >
+            {{ day }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY VIEW -->
+  <div *ngIf="selectedView() === 'day'" class="calendar-day-view">
+    <div class="calendar-day-grid">
+      <div class="time-column">
+        <div class="time-slot" *ngFor="let time of dayTimeSlots">
+          {{ time }}
+        </div>
+      </div>
+      <div class="day-events-column">
+        <div class="day-time-slot" *ngFor="let time of dayTimeSlots">
+          <div 
+            *ngFor="let event of getEventsForDate(selectedDate())" 
+            class="day-event"
+            [style.background]="event.color"
+            [title]="event.title + ' (' + event.startTime + ' - ' + event.endTime + ')'"
+          >
+            <div class="event-time">{{ event.startTime }} - {{ event.endTime }}</div>
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-location" *ngIf="event.location">{{ event.location }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENTS SECTION -->
+  <div class="calendar-events">
+    <div class="events-header">
+      <h3>Events on <span class="calendar-events-date">{{ selectedDate() | date: 'fullDate' }}</span></h3>
+      <div class="broadcast-events" *ngIf="getBroadcastEvents().length > 0">
+        <h4>📡 Broadcast Events</h4>
+        <ul class="calendar-event-list">
+          <li *ngFor="let e of getBroadcastEvents()" [style.color]="e.color">
+            <span class="event-dot" [style.background]="e.color"></span>
+            <span class="event-title">{{ e.title }}</span>
+            <span class="event-time">({{ e.startTime }} - {{ e.endTime }})</span>
+            <button class="delete-btn" (click)="deleteEvent(e.id)">×</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <ul class="calendar-event-list">
       <li *ngFor="let e of getEventsForSelectedDate()" [style.color]="e.color">
-        {{ e.title }} ({{ e.date | date: 'shortTime' }})
+        <span class="event-dot" [style.background]="e.color"></span>
+        <span class="event-title">{{ e.title }}</span>
+        <span class="event-time">({{ e.startTime }} - {{ e.endTime }})</span>
+        <span class="event-broadcast" *ngIf="e.isBroadcast">📡</span>
+        <button class="delete-btn" (click)="deleteEvent(e.id)">×</button>
       </li>
+      <li *ngIf="getEventsForSelectedDate().length === 0" class="no-events">No events for this day.</li>
     </ul>
 
-    <input type="text" [(ngModel)]="newEventTitle" placeholder="Event title" />
-    <select [(ngModel)]="newEventColor">
-      <option *ngFor="let c of colors" [value]="c">{{ c }}</option>
-    </select>
-    <button (click)="addEvent()">Add Event</button>
+    <form class="calendar-event-form" (ngSubmit)="addEvent()" autocomplete="off">
+      <div class="form-row">
+        <input type="text" [(ngModel)]="newEventTitle" name="eventTitle" placeholder="Event title" required />
+        <select [(ngModel)]="newEventColor" name="eventColor">
+          <option *ngFor="let c of colors" [value]="c">{{ c | titlecase }}</option>
+        </select>
+      </div>
+      
+      <div class="form-row">
+        <input type="time" [(ngModel)]="newEventStartTime" name="startTime" />
+        <input type="time" [(ngModel)]="newEventEndTime" name="endTime" />
+      </div>
+      
+      <div class="form-row">
+        <input type="text" [(ngModel)]="newEventLocation" name="location" placeholder="Location (optional)" />
+        <label class="broadcast-checkbox">
+          <input type="checkbox" [(ngModel)]="newEventIsBroadcast" name="isBroadcast" />
+          <span>📡 Broadcast Event</span>
+        </label>
+      </div>
+      
+      <textarea [(ngModel)]="newEventDescription" name="description" placeholder="Description (optional)" rows="2"></textarea>
+      
+      <button type="submit" [disabled]="!newEventTitle.trim()">Add Event</button>
+    </form>
   </div>
 </div>

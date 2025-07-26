@@ -1,30 +1,36 @@
+/* Modern card container */
 .auth-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f3f4f6;
+  background: linear-gradient(135deg, #fbc2eb 0%, #b6e0fe 100%);
   padding: 1rem;
 }
 
 .auth-card {
   background: #fff;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 32px rgba(186, 104, 200, 0.10);
   width: 100%;
   max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 h2 {
-  margin-bottom: 0.25rem;
-  font-size: 1.75rem;
-  color: #111827;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #6d5b97;
+  text-align: center;
 }
 
 p {
   margin-bottom: 1.5rem;
   color: #6b7280;
+  text-align: center;
 }
 
 .form-group {
@@ -44,19 +50,20 @@ input {
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 1rem;
+  background: #f9fafb;
   transition: border-color 0.2s;
 }
 
 input:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: #b6e0fe;
+  box-shadow: 0 0 0 2px rgba(186, 104, 200, 0.15);
 }
 
 .auth-btn {
   width: 100%;
   padding: 0.75rem;
-  background-color: #6366f1;
+  background-color: #6d5b97;
   color: white;
   font-weight: 600;
   border: none;
@@ -67,22 +74,35 @@ input:focus {
 }
 
 .auth-btn:hover {
-  background-color: #4f46e5;
+  background-color: #b6e0fe;
+  color: #3b3b5c;
 }
 
 .signup-redirect {
   margin-top: 1.25rem;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #6b7280;
 }
 
 .signup-redirect a {
-  color: #4f46e5;
+  color: #6d5b97;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.2s;
 }
 
 .signup-redirect a:hover {
   text-decoration: underline;
+  color: #b6e0fe;
+}
+
+/* Error message styling */
+.auth-error {
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.95rem;
 }

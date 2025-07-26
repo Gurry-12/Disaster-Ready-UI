@@ -1,9 +1,19 @@
 <div class="auth-wrapper">
   <div class="auth-card">
-    <h2>Welcome Back 👋</h2>
-    <p>Please enter your credentials to log in.</p>
-
-    <form (ngSubmit)="onLogin()" novalidate>
+    <h2>Create Account</h2>
+    <p>Fill in your details to sign up.</p>
+    <form (ngSubmit)="onSignup()" novalidate>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="name"
+          required
+          placeholder="Your name"
+        />
+      </div>
       <div class="form-group">
         <label for="email">Email</label>
         <input
@@ -15,7 +25,6 @@
           placeholder="you@example.com"
         />
       </div>
-
       <div class="form-group">
         <label for="password">Password</label>
         <input
@@ -24,16 +33,14 @@
           name="password"
           [(ngModel)]="password"
           required
-          placeholder="Enter your password"
+          placeholder="Create a password"
         />
       </div>
-
-      <button type="submit" class="auth-btn">Login</button>
+      <button type="submit" class="auth-btn">Sign Up</button>
     </form>
-
     <p class="signup-redirect">
-      Don't have an account?
-      <a routerLink="/pages/signup/Signup" routerLinkActive="active">Sign up</a>
+      Already have an account?
+      <a routerLink="/pages/login/Login" routerLinkActive="active">Log in</a>
     </p>
   </div>
 </div>
