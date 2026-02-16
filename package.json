@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "serve -s dist/Disaster-Ready-UI/browser --listen ${PORT:-3000}",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -43,6 +43,7 @@
     "leaflet.heat": "^0.2.0",
     "ng2-charts": "^8.0.0",
     "rxjs": "~7.8.0",
+    "serve": "^14.2.4",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
