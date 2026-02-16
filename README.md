@@ -1,59 +1,54 @@
-# DisasterReadyUI
+# Aegis Command | Tactical Response Matrix
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+![Aegis Command](https://raw.githubusercontent.com/Gurry-12/Disaster-Ready-UI/master/src/assets/banner.png)
 
-## Development server
+Aegis Command is a high-fidelity, mission-critical dashboard engineered for unified disaster response and tactical resource coordination. Built with an offline-first philosophy, it aggregates real-time logistics, personnel telemetry, and incident reporting into a single, high-fidelity command interface.
 
-To start a local development server, run:
+## 🛡️ Core Tactical Pillars
 
-```bash
-ng serve
-```
+- **Precision Coordination**: Logic-driven resource tracking and shelter management with real-time occupancy flux monitoring.
+- **Tactical Intelligence**: Live geospatial heatmapping and impact analysis powered by Leaflet and custom telemetry engines.
+- **Resilient Infrastructure**: Built on a foundation of modern reactive state management (NgRx) to ensure operational continuity in high-stress environments.
+- **Unified Command**: Centralized Dispatch Log for reporting, tracking, and resolving critical incidents with geolocation accuracy.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Key Features
 
-## Code scaffolding
+- **Tactical Response Map**: Real-time visualization of disaster incidents, responder locations, and specialized heatmaps.
+- **Operational Shelter Dashboard**: Integrated management of evacuation centers with interactive status toggles and priority logistics tracking (Water, Medical, Power).
+- **Personnel Resilience Matrix**: Comprehensive responder profile management with operational status synchronization.
+- **Dynamic Resource Allocation**: Streamlined deployment of critical assets across southwestern sectors.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🛠️ Technical Manifesto
 
-```bash
-ng generate component component-name
-```
+Aegis Command is built on a cutting-edge reactive architecture:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Frontend**: Angular 20 (Standalone Components)
+- **State Management**: NgRx 18 (Store, Effects, Entity)
+- **Geospatial**: Leaflet & Leaflet.heat
+- **Styling**: Vanilla CSS with a bespoke Bento-Grid design system
+- **Icons**: Bootstrap Icons (Tactical Set)
+- **Stability**: RxJS-driven reactive streams
 
-```bash
-ng generate --help
-```
+## 🧑‍💻 Developer Story
 
-## Building
+**Lead System Architect**: [Gurpreet Singh](https://gurpreetdev.netlify.app/) (@Gurry-12)
 
-To build the project run:
+"We didn't just build a dashboard; we built a lifeline. Aegis Command was born out of a need for more tactical disaster tools—optimized for low-bandwidth environments and high-stress interaction patterns."
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## ⚡ Quick Start
 
-## Running unit tests
+### Prerequisites
+- Node.js (v20+)
+- Angular CLI
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Development Server
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-```bash
-ng test
-```
+### Build
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+**Proprietary Clearance Required.** 
+&copy; 2026 Aegis Command Systems. All rights reserved.
