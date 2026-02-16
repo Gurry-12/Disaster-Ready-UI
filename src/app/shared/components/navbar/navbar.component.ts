@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
@@ -16,10 +16,10 @@ export class NavbarComponent {
   currentUser: User | null = null;
   isMenuOpen = false;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  constructor() {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });

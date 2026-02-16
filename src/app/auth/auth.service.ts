@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user.model';
@@ -18,10 +18,10 @@ export class AuthService {
   public token$ = this.tokenSubject.asObservable();
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(
-    private router: Router,
-    private logger: LoggerService
-  ) {
+  private router = inject(Router);
+  private logger = inject(LoggerService);
+
+  constructor() {
     this.loadStoredAuth();
   }
 

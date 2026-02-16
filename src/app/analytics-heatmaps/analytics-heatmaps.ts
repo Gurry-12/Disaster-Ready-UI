@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, inject, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
-import { Chart, ChartData, ChartOptions, TooltipItem, registerables } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+import { Chart, ChartData, ChartOptions, registerables } from 'chart.js';
 import { LoggerService } from '../shared/services/logger.service';
 import { Store } from '@ngrx/store';
-import { Subject, combineLatest } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
@@ -18,7 +18,7 @@ Chart.register(...registerables, MatrixController, MatrixElement);
 @Component({
   selector: 'analytics-heatmaps',
   standalone: true,
-  imports: [CommonModule, NgChartsModule],
+  imports: [CommonModule, BaseChartDirective],
   templateUrl: './analytics-heatmaps.html',
   styleUrls: ['./analytics-heatmaps.css']
 })
