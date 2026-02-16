@@ -10,10 +10,12 @@ interface Person {
   id: string;
   name: string;
   age: number;
-  status: string;
+  gender: 'male' | 'female' | 'other';
+  status: 'safe' | 'injured' | 'missing' | 'treatment';
   photo: string;
   shelterId: string;
   checkInDate: number;
+  contact: string;
 }
 
 @Component({
@@ -29,22 +31,29 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
 
   shelters: Shelter[] = [];
   people: Person[] = [
-    { id: '1', name: 'Ravi Kumar', age: 28, status: 'safe', photo: 'https://i.pravatar.cc/150?u=ravi', shelterId: 'shelter-001', checkInDate: Date.now() },
-    { id: '2', name: 'Priya Singh', age: 35, status: 'injured', photo: 'https://i.pravatar.cc/150?u=priya', shelterId: 'shelter-001', checkInDate: Date.now() - 86400000 }
+    { id: '1', name: 'Ravi Kumar', age: 28, gender: 'male', status: 'safe', photo: 'https://i.pravatar.cc/150?u=ravi', shelterId: 'shelter-001', checkInDate: Date.now() - 3600000, contact: '+91 98765 43210' },
+    { id: '2', name: 'Priya Singh', age: 35, gender: 'female', status: 'injured', photo: 'https://i.pravatar.cc/150?u=priya', shelterId: 'shelter-001', checkInDate: Date.now() - 86400000, contact: '+91 87654 32109' },
+    { id: '3', name: 'Arjun Das', age: 42, gender: 'male', status: 'safe', photo: 'https://i.pravatar.cc/150?u=arjun', shelterId: 'shelter-002', checkInDate: Date.now() - 43200000, contact: '+91 76543 21098' },
+    { id: '4', name: 'Sneha Rao', age: 22, gender: 'female', status: 'missing', photo: 'https://i.pravatar.cc/150?u=sneha', shelterId: 'shelter-003', checkInDate: Date.now() - 172800000, contact: 'Unknown' },
+    { id: '5', name: 'Vikram Mehta', age: 55, gender: 'male', status: 'treatment', photo: 'https://i.pravatar.cc/150?u=vikram', shelterId: 'shelter-001', checkInDate: Date.now() - 1800000, contact: '+91 65432 10987' }
   ];
 
   newPerson = {
     name: '',
     age: null as number | null,
-    status: 'safe',
+    gender: 'male' as 'male' | 'female' | 'other',
+    status: 'safe' as 'safe' | 'injured' | 'missing' | 'treatment',
     shelterId: '',
+    contact: '',
     photo: 'https://i.pravatar.cc/150?u=default'
   };
 
   selectedShelterId = 'all';
+  selectedStatus = 'all';
   searchQuery = '';
   errorMessage = '';
   successMessage = '';
+  editingPerson: Person | null = null;
 
   ngOnInit() {
     this.shelterService.getShelters()
@@ -69,7 +78,8 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
     return this.people.filter(p => {
       const matchesSearch = p.name.toLowerCase().includes(this.searchQuery.toLowerCase());
       const matchesShelter = this.selectedShelterId === 'all' || p.shelterId === this.selectedShelterId;
-      return matchesSearch && matchesShelter;
+      const matchesStatus = this.selectedStatus === 'all' || p.status === this.selectedStatus;
+      return matchesSearch && matchesShelter && matchesStatus;
     });
   }
 
@@ -89,10 +99,12 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
       id: crypto.randomUUID(),
       name: this.newPerson.name,
       age: this.newPerson.age,
+      gender: this.newPerson.gender,
       status: this.newPerson.status,
       photo: `https://i.pravatar.cc/150?u=${this.newPerson.name}`,
       shelterId: this.newPerson.shelterId,
-      checkInDate: Date.now()
+      checkInDate: Date.now(),
+      contact: this.newPerson.contact || 'N/A'
     };
 
     this.people.push(person);
@@ -130,12 +142,49 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
     return '#10b981'; // Green
   }
 
+  getShelterTypeIcon(type: string): string {
+    switch (type) {
+      case ShelterType.SCHOOL: return 'bi-mortarboard-fill';
+      case ShelterType.SPORTS_COMPLEX: return 'bi-dribbble';
+      case ShelterType.COMMUNITY_CENTER: return 'bi-people-fill';
+      case ShelterType.EVACUATION_CENTER: return 'bi-shield-fill-plus';
+      case ShelterType.RELIEF_CAMP: return 'bi-house-door-fill';
+      case ShelterType.PERMANENT: return 'bi-building-fill-check';
+      default: return 'bi-building-fill';
+    }
+  }
+
+  updatePersonStatus(personId: string, newStatus: any) {
+    const person = this.people.find(p => p.id === personId);
+    if (person) {
+      person.status = newStatus;
+      this.successMessage = `Status updated for ${person.name}`;
+      setTimeout(() => this.successMessage = '', 3000);
+    }
+  }
+
+  updateShelterStatus(shelterId: string, newStatus: any) {
+    const shelter = this.shelters.find(s => s.id === shelterId);
+    if (shelter) {
+      // In a real app, this would call the service and then update the local state
+      // For now we update local state and show a notification
+      const updatedShelters = this.shelters.map(s =>
+        s.id === shelterId ? { ...s, status: newStatus as ShelterStatus, lastUpdated: Date.now() } : s
+      );
+      this.shelters = updatedShelters;
+      this.successMessage = `${shelter.name} status updated to ${newStatus}`;
+      setTimeout(() => this.successMessage = '', 3000);
+    }
+  }
+
   private resetForm() {
     this.newPerson = {
       name: '',
       age: null,
+      gender: 'male',
       status: 'safe',
       shelterId: '',
+      contact: '',
       photo: 'https://i.pravatar.cc/150?u=default'
     };
   }

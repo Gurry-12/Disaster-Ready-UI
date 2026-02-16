@@ -7,7 +7,7 @@ export const environment = {
   // Set this via environment variable: process.env['GOOGLE_MAPS_API_KEY']
   mapApiKey: '', // TODO: Load from environment variable or backend
   version: '1.0.0',
-  appName: 'Disaster Ready',
+  appName: 'Aegis Command',
   features: {
     realTimeAlerts: true,
     liveMap: true,

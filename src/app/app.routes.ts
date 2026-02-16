@@ -21,6 +21,7 @@ import { CustomizeKit } from './customize-kit/customize-kit';
 import { ChangePassword } from './change-password/change-password';
 import { Profile } from './profile/profile';
 import { DisasterReportForm } from './disaster-report-form/disaster-report-form';
+import { AboutComponent } from './about/about';
 
 export const routes: Routes = [
   // Public routes (no auth required)
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'signup', component: Signup },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'about', component: AboutComponent },
 
   // Protected routes (auth required)
   {

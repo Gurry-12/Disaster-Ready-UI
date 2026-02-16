@@ -1,5 +1,5 @@
 .kit-page {
-  padding: 2rem;
+  padding: 2rem 2rem 6rem; /* Increased bottom padding */
   max-width: 1500px;
   margin: 0 auto;
   font-family: 'Inter', sans-serif;

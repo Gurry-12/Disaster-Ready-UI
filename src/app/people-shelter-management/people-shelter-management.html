@@ -5,8 +5,8 @@
   </div>
 
   <div class="bento-grid">
-    <!-- Shelter Overview (Main Content) -->
-    <div class="analytics-chart col-span-2 row-span-2">
+    <!-- Shelter Overview (Full Width Header) -->
+    <div class="analytics-chart col-span-3">
       <div class="card-header">
         <h3>Operational Shelters</h3>
         <div class="matrix-actions">
@@ -26,24 +26,48 @@
         <table class="shelter-table">
           <thead>
             <tr>
-              <th>Shelter Identity</th>
+              <th><i class="bi bi-shield-check"></i> Shelter Identity</th>
               <th>Classification</th>
-              <th>Grid Status</th>
-              <th>Logistics Level</th>
+              <th>Status</th>
+              <th>Capacity Metrics</th>
               <th>Occupancy Flux</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             @for (shelter of filteredShelters; track shelter.id) {
               <tr>
-                <td>{{ shelter.name }}</td>
-                <td>{{ shelter.type | titlecase }}</td>
                 <td>
-                  <span class="badge" [ngClass]="shelter.status">
-                    {{ shelter.status | titlecase }}
-                  </span>
+                  <div class="shelter-identity-cell">
+                    <span class="shelter-icon">
+                      <i class="bi" [ngClass]="getShelterTypeIcon(shelter.type)"></i>
+                    </span>
+                    <div class="shelter-main-info">
+                      <span class="shelter-name">{{ shelter.name }}</span>
+                      <span class="shelter-location">{{ shelter.location.city }}, {{ shelter.location.state }}</span>
+                    </div>
+                  </div>
                 </td>
-                <td>{{ shelter.capacity.occupied }} / {{ shelter.capacity.total }} Units</td>
+                <td class="class-cell">{{ shelter.type | titlecase }}</td>
+                <td>
+                  <select [ngModel]="shelter.status" 
+                    (ngModelChange)="updateShelterStatus(shelter.id, $event)"
+                    class="table-select-badge"
+                    [ngClass]="'status-' + shelter.status">
+                    <option value="operational">Operational</option>
+                    <option value="near_capacity">Near Capacity</option>
+                    <option value="full">Full</option>
+                    <option value="closed">Closed</option>
+                    <option value="under_preparation">Preparing</option>
+                  </select>
+                </td>
+                <td class="capacity-cell">
+                  <div class="capacity-stats">
+                    <span class="occupied">{{ shelter.capacity.occupied }}</span>
+                    <span class="separator">/</span>
+                    <span class="total">{{ shelter.capacity.total }}</span>
+                  </div>
+                </td>
                 <td>
                   <div class="occupancy-box">
                     <div class="progress-bar">
@@ -53,6 +77,16 @@
                       </div>
                     </div>
                     <span class="percent-label">{{ getOccupancyPercentage(shelter) | number:'1.0-0' }}%</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="action-group">
+                    <button class="action-btn" title="View Details">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="action-btn" title="Resource Allocation">
+                      <i class="bi bi-box-seam"></i>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -74,15 +108,24 @@
         </div>
         <div class="form-row">
           <input type="number" [(ngModel)]="newPerson.age" name="age" placeholder="Age" required>
+          <select [(ngModel)]="newPerson.gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
           <select [(ngModel)]="newPerson.status" name="status" required>
             <option value="safe">Nominal (Safe)</option>
             <option value="injured">Triage (Injured)</option>
             <option value="missing">Trace (Missing)</option>
+            <option value="treatment">Treatment (Active)</option>
           </select>
+          <input type="text" [(ngModel)]="newPerson.contact" name="contact" placeholder="Contact (Phone/ID)">
         </div>
         <div class="form-group">
           <select [(ngModel)]="newPerson.shelterId" name="shelterId" required>
-            <option value="" disabled>Target Shelter Assignment</option>
+            <option value="" disabled selected>Target Shelter Assignment</option>
             @for (shelter of shelters; track shelter.id) {
               <option [value]="shelter.id" [disabled]="shelter.status === 'full'">
                 {{ shelter.name }} {{ shelter.status === 'full' ? '(AT CAPACITY)' : '' }}
@@ -99,39 +142,150 @@
       @if (successMessage) { <div class="success-toast">{{ successMessage }}</div> }
     </div>
 
+    <!-- NEW SECTION: Shelter Insights & Logistics -->
+    <div class="analytics-chart col-span-2">
+      <div class="card-header">
+        <h3><i class="bi bi-lightning-charge-fill"></i> Shelter Insights & Priority Logistics</h3>
+      </div>
+      
+      <div class="logistics-grid">
+        <div class="logistics-card priority">
+          <div class="log-icon red"><i class="bi bi-droplet-fill"></i></div>
+          <div class="log-info">
+            <span class="log-label">Potable Water</span>
+            <span class="log-value">Critical (12% Left)</span>
+            <div class="mini-progress"><div class="fill red" style="width: 12%"></div></div>
+          </div>
+        </div>
+        <div class="logistics-card">
+          <div class="log-icon blue"><i class="bi bi-capsule"></i></div>
+          <div class="log-info">
+            <span class="log-label">Medical Kits</span>
+            <span class="log-value">Stable (68%)</span>
+            <div class="mini-progress"><div class="fill blue" style="width: 68%"></div></div>
+          </div>
+        </div>
+        <div class="logistics-card warning">
+          <div class="log-icon amber"><i class="bi bi-plug-fill"></i></div>
+          <div class="log-info">
+            <span class="log-label">Power Reservce</span>
+            <span class="log-value">Low (34%)</span>
+            <div class="mini-progress"><div class="fill amber" style="width: 34%"></div></div>
+          </div>
+        </div>
+        <div class="logistics-card">
+          <div class="log-icon green"><i class="bi bi-box-fill"></i></div>
+          <div class="log-info">
+            <span class="log-label">Dry Rations</span>
+            <span class="log-value">Optimal (92%)</span>
+            <div class="mini-progress"><div class="fill green" style="width: 92%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insights-row">
+        <div class="insight-stat">
+          <span class="stat-value">4.2k</span>
+          <span class="stat-desc">Total Evacuees</span>
+        </div>
+        <div class="insight-stat">
+          <span class="stat-value">12</span>
+          <span class="stat-desc">Active Shelters</span>
+        </div>
+        <div class="insight-stat">
+          <span class="stat-value">86%</span>
+          <span class="stat-desc">Avg. Occupancy</span>
+        </div>
+        <div class="insight-stat">
+          <span class="stat-value">03h</span>
+          <span class="stat-desc">Next Resupply</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Occupants List (Full Width Bottom) -->
     <div class="analytics-chart col-span-3">
       <div class="card-header">
         <h3>Current Manifest</h3>
         <div class="matrix-actions">
           <div class="search-shield">
+            <i class="bi bi-filter-circle"></i>
+            <select [(ngModel)]="selectedStatus" class="filter-select">
+              <option value="all">All Statuses</option>
+              <option value="safe">Safe</option>
+              <option value="injured">Injured</option>
+              <option value="missing">Missing</option>
+              <option value="treatment">Treatment</option>
+            </select>
+          </div>
+          <div class="search-shield">
             <i class="bi bi-search"></i>
-            <input type="text" [(ngModel)]="searchQuery" placeholder="Filter manifest by name...">
+            <input type="text" [(ngModel)]="searchQuery" placeholder="Filter by name...">
           </div>
         </div>
       </div>
 
-      <div class="occupants-grid">
-        @for (person of filteredPeople; track person.id) {
-          <div class="occupant-card">
-            <div class="avatar-container">
-              <img [src]="person.photo" [alt]="person.name" class="avatar">
-              <span class="status-dot" [ngClass]="person.status"></span>
-            </div>
-            <div class="occupant-info">
-              <h4>{{ person.name }}</h4>
-              <p class="age-meta">{{ person.age }}y • Entry: {{ person.checkInDate | date:'shortTime' }}</p>
-              <div class="shelter-tag">
-                <i class="bi bi-geo-alt-fill"></i> {{ (shelters | filterById: person.shelterId)?.name || 'Assigning...' }}
-              </div>
-            </div>
-            <button class="action-btn delete" (click)="removePerson(person.id)" title="Release from Shelter">
-              <i class="bi bi-box-arrow-right"></i>
-            </button>
-          </div>
-        } @empty {
-          <div class="empty-state">No occupant data synchronized for current query.</div>
-        }
+      <div class="table-wrapper">
+        <table class="shelter-table manifest-table">
+          <thead>
+            <tr>
+              <th>Profile</th>
+              <th>Identity</th>
+              <th>Metrics</th>
+              <th>Assignment</th>
+              <th>Status</th>
+              <th>Enrolled</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (person of filteredPeople; track person.id) {
+              <tr>
+                <td>
+                  <img [src]="person.photo" [alt]="person.name" class="table-avatar">
+                </td>
+                <td>
+                  <div class="identity-info">
+                    <span class="person-name">{{ person.name }}</span>
+                    <span class="person-contact">{{ person.contact }}</span>
+                  </div>
+                </td>
+                <td>{{ person.age }}y / {{ person.gender | titlecase }}</td>
+                <td>
+                  <div class="shelter-tag">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    {{ (shelters | filterById: person.shelterId)?.name || 'Assigning...' }}
+                  </div>
+                </td>
+                <td>
+                  <select [ngModel]="person.status" 
+                    (ngModelChange)="updatePersonStatus(person.id, $event)"
+                    class="table-select-badge"
+                    [ngClass]="person.status">
+                    <option value="safe">Safe</option>
+                    <option value="injured">Injured</option>
+                    <option value="missing">Missing</option>
+                    <option value="treatment">Treatment</option>
+                  </select>
+                </td>
+                <td>{{ person.checkInDate | date:'MMM d, HH:mm' }}</td>
+                <td>
+                  <div class="action-group">
+                    <button class="action-btn delete" (click)="removePerson(person.id)" title="Release from Shelter">
+                      <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state">No occupant data synchronized for current query.</div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

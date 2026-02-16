@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { NotificationService } from '../core/services/notification.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
@@ -29,9 +30,10 @@ export class Profile {
   };
 
   profileForm = this.fb.group({
-    name: [this.user.name],
-    email: [this.user.email],
-    phone: [this.user.phone]
+    name: [this.user.name, [Validators.required, Validators.minLength(3)]],
+    email: [this.user.email, [Validators.required, Validators.email]],
+    phone: [this.user.phone, [Validators.required]],
+    status: [this.user.status, [Validators.required]]
   });
 
   recentActivity = [
@@ -41,20 +43,27 @@ export class Profile {
   ];
 
   saveProfile() {
-    if (this.profileForm.invalid) return;
+    if (this.profileForm.invalid) {
+      this.notificationService.error('Please correct the errors in the form');
+      return;
+    }
 
     this.isSaving = true;
 
     // Simulate API call
     setTimeout(() => {
       this.isSaving = false;
+      const formValue = this.profileForm.value;
+
       // Update local user object to reflect changes in UI
       this.user = {
         ...this.user,
-        name: this.profileForm.value.name || this.user.name,
-        email: this.profileForm.value.email || this.user.email,
-        phone: this.profileForm.value.phone || this.user.phone
+        name: formValue.name || this.user.name,
+        email: formValue.email || this.user.email,
+        phone: formValue.phone || this.user.phone,
+        status: formValue.status || this.user.status
       };
+
       this.notificationService.success('Profile updated successfully');
     }, 1500);
   }

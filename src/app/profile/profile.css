@@ -17,8 +17,37 @@
 
 .header-banner {
   height: 200px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
   position: relative;
+  overflow: hidden;
+}
+
+.header-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.15) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.header-banner::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 120%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.4) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: pulse-glow 8s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from { transform: scale(1); opacity: 0.5; }
+  to { transform: scale(1.1); opacity: 0.8; }
 }
 
 .header-main {
@@ -27,9 +56,13 @@
   align-items: flex-end;
   gap: 2.5rem;
   margin-top: -80px;
+  position: relative;
+  z-index: 20; /* Ensure it's above everything in the banner */
+  flex-wrap: wrap;
 }
 
 .avatar-block {
+  flex-shrink: 0;
   position: relative;
   width: 160px;
   height: 160px;
@@ -38,6 +71,7 @@
   background: white;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   overflow: hidden;
+  z-index: 21;
 }
 
 .avatar-block img {
@@ -59,6 +93,7 @@
   backdrop-filter: blur(8px);
   letter-spacing: 0.05em;
   transition: background 0.3s ease;
+  z-index: 22;
 }
 
 .status-badge.on-duty { background: rgba(16, 185, 129, 0.95); } /* Green */
@@ -68,18 +103,21 @@
 
 .name-block {
   padding-bottom: 0.5rem;
+  position: relative;
+  z-index: 21;
 }
 
 .name-block h2 {
-  font-size: 2.5rem;
+  font-size: 2.75rem; /* Slightly larger */
   font-weight: 900;
   color: #0f172a;
   letter-spacing: -0.02em;
   margin-bottom: 0.25rem;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5); /* Help visibility if overlapping */
 }
 
 .role-tag {
-  color: #64748b;
+  color: #475569;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -87,7 +125,7 @@
   font-size: 1.1rem;
 }
 
-.role-tag i { color: #3b82f6; }
+.role-tag i { color: #444ce7; } /* Match banner */
 
 /* Profile Grid */
 .profile-grid {
@@ -98,6 +136,8 @@
 
 @media (max-width: 1000px) {
   .profile-grid { grid-template-columns: 1fr; }
+  .header-main { gap: 1.5rem; justify-content: center; text-align: center; }
+  .name-block h2 { font-size: 2rem; }
 }
 
 .profile-card {
@@ -173,6 +213,25 @@
   background: white;
   border-color: #3b82f6;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.form-group.is-invalid input,
+.form-group.is-invalid select {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.form-group.is-invalid input:focus,
+.form-group.is-invalid select:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.error-msg {
+  display: block;
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 700;
+  margin-top: 0.5rem;
 }
 
 .save-btn {

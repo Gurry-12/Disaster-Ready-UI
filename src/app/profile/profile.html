@@ -22,20 +22,29 @@
         <h3>Account Settings</h3>
       </div>
       <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="settings-form">
-        <div class="form-group">
+        <div class="form-group" [class.is-invalid]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
           <label>Full Name</label>
           <input type="text" formControlName="name">
+          @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
+            <span class="error-msg">Name is required (min 3 chars)</span>
+          }
         </div>
-        <div class="form-group">
+        <div class="form-group" [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
           <label>Email Address</label>
           <input type="email" formControlName="email">
+          @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+            <span class="error-msg">Valid email is required</span>
+          }
         </div>
-        <div class="form-group">
+        <div class="form-group" [class.is-invalid]="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
           <label>Emergency Contact Line</label>
           <input type="text" formControlName="phone">
+          @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+            <span class="error-msg">Phone number is required</span>
+          }
         </div>
         <div class="form-group">
-          <label>Status</label>
+          <label>Operational Status</label>
           <select formControlName="status">
             <option value="On Duty">On Duty</option>
             <option value="Deployed">Deployed</option>
@@ -43,8 +52,8 @@
             <option value="On Leave">On Leave</option>
           </select>
         </div>
-        <button type="submit" class="save-btn" [disabled]="isSaving">
-          {{ isSaving ? 'Updating...' : 'Update Profile' }}
+        <button type="submit" class="save-btn" [disabled]="isSaving || profileForm.invalid">
+          {{ isSaving ? 'Committing Changes...' : 'Synchronize Profile' }}
         </button>
       </form>
     </div>
@@ -71,7 +80,8 @@
 
       <div class="security-links">
         <button class="link-btn" routerLink="/change-password">
-          <i class="bi bi-key"></i> Modify Authentication Credentials
+          <span><i class="bi bi-key"></i> Modify Authentication Credentials</span>
+          <i class="bi bi-chevron-right"></i>
         </button>
       </div>
     </div>

@@ -1,0 +1,86 @@
+<div class="about-container">
+  <!-- Brand Section -->
+  <header class="about-header">
+    <div class="header-content">
+      <span class="badge-accent">System Manifesto</span>
+      <h1>Aegis Command</h1>
+      <p class="subtitle">The Blueprint for Unified Crisis Response</p>
+    </div>
+  </header>
+
+  <div class="bento-grid">
+    <!-- Product Info: Mission -->
+    <div class="about-card col-span-2 primary">
+      <div class="card-icon"><i class="bi bi-shield-fill-check"></i></div>
+      <h2>The Mission</h2>
+      <p>
+        Aegis Command was engineered to bridge the critical information gap during large-scale emergencies. 
+        In the "golden hour" of crisis response, fragmented data costs lives. Our platform aggregates 
+        dispersed logistics, personnel telemetry, and incident reporting into a single, high-fidelity 
+        Tactical Response Matrix.
+      </p>
+      <div class="card-stats">
+        <div class="stat">
+          <span class="val">0.4s</span>
+          <span class="label">Telemetry Sync</span>
+        </div>
+        <div class="stat">
+          <span class="val">Off-Grid</span>
+          <span class="label">Ready</span>
+        </div>
+        <div class="stat">
+          <span class="val">100%</span>
+          <span class="label">Coordination</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Developer Story -->
+    <div class="about-card col-span-1 dev-card">
+      <div class="card-icon"><i class="bi bi-code-slash"></i></div>
+      <h2>Developer Story</h2>
+      
+      <div class="dev-profile">
+        <div class="dev-info">
+          <span class="dev-name">{{ leadDeveloper.name }}</span>
+          <span class="dev-role">{{ leadDeveloper.role }}</span>
+        </div>
+        <p class="dev-bio">{{ leadDeveloper.bio }}</p>
+        <span class="dev-handle"><i class="bi bi-github"></i> {{ leadDeveloper.handle }}</span>
+      </div>
+
+      <p class="quote">"We didn't just build a dashboard; we built a lifeline."</p>
+    </div>
+
+    <!-- Core Pillars -->
+    @for (pillar of corePillars; track pillar.title) {
+      <div class="about-card col-span-1 pillar">
+        <div class="pillar-icon"><i class="bi" [ngClass]="pillar.icon"></i></div>
+        <h3>{{ pillar.title }}</h3>
+        <p>{{ pillar.desc }}</p>
+      </div>
+    }
+
+    <!-- Technical Stack -->
+    <div class="about-card col-span-3 tech-manifesto">
+      <div class="manifesto-header">
+        <h3>Technical Integrity</h3>
+        <p>Built on a foundation of modern reactive architecture.</p>
+      </div>
+      <div class="tech-grid">
+        @for (tech of techStack; track tech.name) {
+          <div class="tech-tag">
+            <span class="tech-lvl">{{ tech.level }}</span>
+            <span class="tech-name">{{ tech.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <footer class="about-footer">
+    <button routerLink="/dashboard" class="back-btn">
+      <i class="bi bi-arrow-left"></i> Return to Command Center
+    </button>
+  </footer>
+</div>
