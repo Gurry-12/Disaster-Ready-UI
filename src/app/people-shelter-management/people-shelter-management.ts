@@ -164,7 +164,7 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
     }
   }
 
-  updatePersonStatus(personId: string, newStatus: any) {
+  updatePersonStatus(personId: string, newStatus: 'safe' | 'injured' | 'missing' | 'treatment') {
     const person = this.people.find(p => p.id === personId);
     if (person) {
       person.status = newStatus;
@@ -173,7 +173,7 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
     }
   }
 
-  updateShelterStatus(shelterId: string, newStatus: any) {
+  updateShelterStatus(shelterId: string, newStatus: ShelterStatus) {
     const shelter = this.shelters.find(s => s.id === shelterId);
     if (shelter) {
       // In a real app, this would call the service and then update the local state
