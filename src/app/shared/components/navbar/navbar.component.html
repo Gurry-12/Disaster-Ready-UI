@@ -13,8 +13,11 @@
       <div class="navbar-item has-dropdown" [class.is-active]="isMenuOpen">
         <a class="navbar-link" (click)="toggleMenu()">
           <i class="bi bi-person-circle"></i>
-          <span *ngIf="currentUser">{{ currentUser.name }}</span>
-          <span *ngIf="!currentUser">Guest</span>
+          @if (currentUser) {
+            <span>{{ currentUser.name }}</span>
+          } @else {
+            <span>Guest</span>
+          }
           <i class="bi bi-chevron-down"></i>
         </a>
 
