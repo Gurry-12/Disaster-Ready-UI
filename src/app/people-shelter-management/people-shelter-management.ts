@@ -18,6 +18,16 @@ interface Person {
   contact: string;
 }
 
+interface NewPerson {
+  name: string;
+  age: number | null;
+  gender: 'male' | 'female' | 'other';
+  status: 'safe' | 'injured' | 'missing' | 'treatment';
+  shelterId: string;
+  contact: string;
+  photo: string;
+}
+
 @Component({
   selector: 'app-people-shelter-management',
   standalone: true,
@@ -38,11 +48,11 @@ export class PeopleShelterManagement implements OnInit, OnDestroy {
     { id: '5', name: 'Vikram Mehta', age: 55, gender: 'male', status: 'treatment', photo: 'https://i.pravatar.cc/150?u=vikram', shelterId: 'shelter-001', checkInDate: Date.now() - 1800000, contact: '+91 65432 10987' }
   ];
 
-  newPerson = {
+  newPerson: NewPerson = {
     name: '',
-    age: null as number | null,
-    gender: 'male' as 'male' | 'female' | 'other',
-    status: 'safe' as 'safe' | 'injured' | 'missing' | 'treatment',
+    age: null,
+    gender: 'male',
+    status: 'safe',
     shelterId: '',
     contact: '',
     photo: 'https://i.pravatar.cc/150?u=default'
