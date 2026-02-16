@@ -1,0 +1,124 @@
+[
+  {
+    "id": "shelter-001",
+    "name": "Central Community Hall",
+    "type": "community_center",
+    "status": "operational",
+    "capacity": {
+      "total": 500,
+      "occupied": 120,
+      "available": 380,
+      "families": 30,
+      "individuals": 40
+    },
+    "location": {
+      "latitude": 28.6139,
+      "longitude": 77.2090,
+      "address": "123 Main St, Central District",
+      "city": "New Delhi",
+      "state": "Delhi"
+    },
+    "amenities": [
+      { "type": "food", "available": true },
+      { "type": "water", "available": true },
+      { "type": "medical_facility", "available": true },
+      { "type": "sanitation", "available": true }
+    ],
+    "contact": {
+      "name": "Rajesh Kumar",
+      "phone": "+91-9876543210",
+      "role": "Coordinator"
+    },
+    "managedBy": "City Municipal Corp",
+    "accessibility": {
+      "wheelchairAccessible": true,
+      "elevatorAvailable": false,
+      "signLanguageSupport": false,
+      "brailleSignage": false,
+      "accessibleRestrooms": true,
+      "ramps": true
+    },
+    "lastUpdated": 1709210000000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "shelter-002",
+    "name": "St. Mary's School",
+    "type": "school",
+    "status": "near_capacity",
+    "capacity": {
+      "total": 300,
+      "occupied": 280,
+      "available": 20
+    },
+    "location": {
+      "latitude": 19.0760,
+      "longitude": 72.8777,
+      "address": "45 School Ln, Bandra West",
+      "city": "Mumbai",
+      "state": "Maharashtra"
+    },
+    "amenities": [
+      { "type": "food", "available": true },
+      { "type": "water", "available": true },
+      { "type": "electricity", "available": true }
+    ],
+    "contact": {
+      "name": "Sister Anita",
+      "phone": "+91-9988776655",
+      "role": "Principal"
+    },
+    "managedBy": "St. Mary's Trust",
+    "accessibility": {
+      "wheelchairAccessible": false,
+      "elevatorAvailable": false,
+      "signLanguageSupport": false,
+      "brailleSignage": false,
+      "accessibleRestrooms": false,
+      "ramps": false
+    },
+    "lastUpdated": 1709215000000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "shelter-003",
+    "name": "Red Cross Relief Camp",
+    "type": "relief_camp",
+    "status": "operational",
+    "capacity": {
+      "total": 1000,
+      "occupied": 450,
+      "available": 550
+    },
+    "location": {
+      "latitude": 13.0827,
+      "longitude": 80.2707,
+      "address": "Sector 4, Open Grounds",
+      "city": "Chennai",
+      "state": "Tamil Nadu"
+    },
+    "amenities": [
+      { "type": "food", "available": true },
+      { "type": "water", "available": true },
+      { "type": "medical_facility", "available": true },
+      { "type": "sanitation", "available": true },
+      { "type": "blankets", "available": true }
+    ],
+    "contact": {
+      "name": "Dr. Venkat",
+      "phone": "+91-9123456789",
+      "role": "Medical Officer"
+    },
+    "managedBy": "Red Cross Society",
+    "accessibility": {
+      "wheelchairAccessible": true,
+      "elevatorAvailable": false,
+      "signLanguageSupport": true,
+      "brailleSignage": false,
+      "accessibleRestrooms": true,
+      "ramps": true
+    },
+    "lastUpdated": 1709220000000,
+    "syncStatus": "synced"
+  }
+]

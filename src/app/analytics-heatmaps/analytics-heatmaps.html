@@ -4,27 +4,86 @@
     <p>Visualize high-risk zones and trends using interactive charts.</p>
   </div>
 
-  <div class="analytics-chart">
-    <canvas baseChart
-      [data]="barChartData"
-      [options]="barChartOptions"
-      [type]="barChartType">
-    </canvas>
-  </div>
+  <div class="bento-grid">
+    <!-- Row 1: Frequency and Severity -->
+    <div class="analytics-chart col-span-2">
+      <div style="position: relative; height: 100%; width: 100%;">
+        <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="barChartType">
+        </canvas>
+      </div>
+    </div>
 
-  <div class="analytics-chart">
-    <canvas baseChart
-      [data]="pieChartData"
-      [options]="pieChartOptions"
-      [type]="pieChartType">
-    </canvas>
-  </div>
+    <div class="analytics-chart col-span-1">
+      <div style="position: relative; height: 100%; width: 100%;">
+        <canvas baseChart
+          [data]="pieChartData"
+          [options]="pieChartOptions"
+          [type]="pieChartType">
+        </canvas>
+      </div>
+    </div>
 
-  <div class="analytics-chart">
-    <canvas baseChart
-      [data]="lineChartData"
-      [options]="lineChartOptions"
-      [type]="lineChartType">
-    </canvas>
+    <!-- Row 2: Trend and Insights -->
+    <div class="analytics-chart col-span-2">
+      <div style="position: relative; height: 100%; width: 100%;">
+        <canvas baseChart
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [type]="lineChartType">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="analytics-chart col-span-1 insights-card">
+      <div class="card-header">
+        <h3>Incident Analysis</h3>
+        <span class="badge info">Summary</span>
+      </div>
+      <div class="stats-list">
+        <div class="stat-item">
+          <span class="label">Detection Speed</span>
+          <span class="value">0.8s</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Resolution Rate</span>
+          <span class="value">92%</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">Risk Trend</span>
+          <span class="value warning">Increasing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Temporal Heatmap and Live Log -->
+    <div class="analytics-chart col-span-2 heatmap-container">
+      <div style="position: relative; height: 100%; min-height: 300px; width: 100%;">
+        <canvas baseChart
+          [data]="heatmapChartData"
+          [options]="heatmapChartOptions"
+          [type]="heatmapChartType">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="analytics-chart col-span-1 insights-card">
+       <div class="card-header">
+        <h3>Insights Log</h3>
+      </div>
+      <div class="log-entries">
+        <div class="log-entry">
+          <span class="dot red"></span> Heavy Flood Risk - Zone B
+        </div>
+        <div class="log-entry">
+          <span class="dot green"></span> Fire Neutralized - Sector 4
+        </div>
+        <div class="log-entry">
+          <span class="dot yellow"></span> Resource Shortage Warning
+        </div>
+      </div>
+    </div>
   </div>
 </div>

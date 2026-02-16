@@ -1,34 +1,159 @@
-<div class="kit-container">
-  <h2>Customize Your Go-Bag</h2>
-
-  <form class="filter-form">
-    <label>Disaster Type:
-      <select [(ngModel)]="selectedDisaster" name="disaster">
-        <option *ngFor="let type of disasterTypes" [value]="type">{{ type }}</option>
-      </select>
-    </label>
-
-    <label>Family Size:
-      <input type="number" [(ngModel)]="familySize" name="familySize" min="1" />
-    </label>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="hasPets" name="hasPets" /> Include Pet Supplies
-    </label>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="hasMedicalNeeds" name="hasMedicalNeeds" /> Include Medical Supplies
-    </label>
-
-    <button type="button" (click)="generateChecklist()">Generate Checklist</button>
-  </form>
-
-  <div *ngIf="customChecklist.length > 0" class="checklist">
-    <h3>Your Emergency Kit:</h3>
-    <ul>
-      <li *ngFor="let item of customChecklist">
-        <input type="checkbox" /> {{ item.name }} (x{{ item.quantity }})
-      </li>
-    </ul>
+<div class="kit-page">
+  <div class="page-header">
+    <h2>Go-Bag Customizer</h2>
+    <p>Prepare your personal emergency kit based on your needs and environmental factors.</p>
   </div>
+
+  @if (!manifestFinalized()) {
+    <div class="kit-grid">
+      <!-- Config Card -->
+      <div class="kit-card config-card">
+        <div class="card-header">
+          <h3>Kit Parameters</h3>
+        </div>
+        
+        <div class="form-scroll">
+          <div class="form-group">
+            <label>Primary Threat</label>
+            <div class="disaster-select">
+              @for (type of disasterTypes; track type.name) {
+                <div 
+                  class="disaster-option" 
+                  [class.active]="selectedDisaster === type.name"
+                  (click)="selectedDisaster = type.name; generateChecklist()">
+                  <i class="bi" [ngClass]="type.icon"></i>
+                  <span>{{ type.name }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Family Size</label>
+              <input type="number" [(ngModel)]="familySize" (change)="generateChecklist()" min="1" max="10">
+            </div>
+            <div class="form-group">
+              <label>Days of Supplies</label>
+              <input type="number" [(ngModel)]="daysToLast" (change)="generateChecklist()" min="1" max="14">
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <label class="custom-checkbox">
+              <input type="checkbox" [(ngModel)]="hasPets" (change)="generateChecklist()">
+              <span class="checkmark"></span>
+              <span class="label-text"><i class="bi bi-dog"></i> Include Pets</span>
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" [(ngModel)]="hasMedicalNeeds" (change)="generateChecklist()">
+              <span class="checkmark"></span>
+              <span class="label-text"><i class="bi bi-heart-pulse"></i> Medical Needs</span>
+            </label>
+          </div>
+
+          <button class="generate-btn" (click)="onFinalizeManifest()">
+            <i class="bi bi-shield-shaded"></i> GENERATE SURVIVAL MANIFEST
+          </button>
+        </div>
+      </div>
+
+
+      <!-- Checklist Card -->
+      <div class="kit-card checklist-card">
+        <div class="card-header">
+          <div class="header-main">
+            <h3>Emergency Checklist</h3>
+            <div class="readiness-badge" [class.ready]="getPreparednessScore() === 100">
+              <i class="bi bi-activity"></i> Readiness: {{ getPreparednessScore() }}%
+            </div>
+          </div>
+          <span class="count-badge">{{ customChecklist.length }} Items Recommended</span>
+        </div>
+
+
+        <div class="items-list">
+          @for (item of customChecklist; track item.id) {
+            <div class="kit-item" [class.checked]="item.checked" (click)="toggleItem(item.id)">
+              <div class="item-main">
+                <i class="bi" [ngClass]="item.icon"></i>
+                <div class="item-info">
+                  <h4>{{ item.name }}</h4>
+                  <div class="item-meta">
+                    <span class="category-tag">{{ item.category }}</span>
+                    <span class="priority-tag" [ngClass]="item.priority.toLowerCase()">{{ item.priority }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="item-action">
+                <span class="qty">x{{ item.quantity }}</span>
+                <div class="check-circle">
+                  @if (item.checked) { <i class="bi bi-check-lg"></i> }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="manifest-document">
+      <div class="doc-header">
+        <div class="doc-badge">OFFICIAL SURVIVAL PROTOCOL</div>
+        <button class="back-link" (click)="resetManifest()"><i class="bi bi-arrow-left"></i> Edit Config</button>
+      </div>
+      
+      <div class="doc-body">
+        <div class="doc-section hero-section">
+          <div class="hero-content">
+            <i class="bi bi-shield-check"></i>
+            <h3>Survival Manifest Executed</h3>
+            <p>Ready for {{ selectedDisaster }} Sector Deployment</p>
+          </div>
+          <div class="hero-stats">
+            <div class="h-stat">
+              <span class="label">Total Assets</span>
+              <span class="val">{{ customChecklist.length }}</span>
+            </div>
+            <div class="h-stat">
+              <span class="label">Readiness</span>
+              <span class="val">{{ getPreparednessScore() }}%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-grid">
+          <div class="doc-card summary-card">
+            <h4>Personnel Detail</h4>
+            <div class="doc-info-row">
+              <span class="label">Family Units:</span>
+              <span class="val">{{ familySize }} Personnel</span>
+            </div>
+            <div class="doc-info-row">
+              <span class="label">Protocol Duration:</span>
+              <span class="val">{{ daysToLast }} Days</span>
+            </div>
+            <div class="doc-info-row">
+              <span class="label">Priority Threat:</span>
+              <span class="val">{{ selectedDisaster }}</span>
+            </div>
+          </div>
+
+          <div class="doc-card inventory-summary">
+            <h4>Asset Categories</h4>
+            <div class="cat-grid">
+              <div class="cat-pill">Essentials</div>
+              <div class="cat-pill">Medical</div>
+              @if (hasPets) { <div class="cat-pill">Pets</div> }
+              <div class="cat-pill">Tools</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">
+          <i class="bi bi-printer"></i> PRINT OFFICIAL PROTOCOL
+        </button>
+      </div>
+    </div>
+  }
 </div>

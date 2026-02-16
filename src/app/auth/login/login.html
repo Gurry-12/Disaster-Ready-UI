@@ -1,71 +1,119 @@
-<div class="auth-wrapper">
-  <div class="auth-card">
-    <h2>Welcome Back 👋</h2>
-    <p>Please enter your credentials to log in.</p>
+<div class="login-page">
+  <div class="login-split-container">
+    <!-- Left Section: Authentic Logic -->
+    <div class="login-section-form">
+      <div class="form-content">
+        <header class="form-header">
+          <div class="logo-circle">
+            <i class="bi bi-shield-lock-fill"></i>
+          </div>
+          <h1>Personnel Authorization</h1>
+          <p>Secure access gateway for authorized disaster response personnel.</p>
+        </header>
 
-    <form (ngSubmit)="onLogin()" novalidate>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="email"
-          required
-          placeholder="you@example.com"
-          [disabled]="isLoading"
-        />
+        <form (ngSubmit)="onLogin()" novalidate class="modern-form">
+          <div class="form-group">
+            <label for="email">Operational Email</label>
+            <div class="input-wrapper">
+              <i class="bi bi-envelope"></i>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                [(ngModel)]="email"
+                required
+                placeholder="id@disaster-ready.gov"
+                [disabled]="isLoading"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Security Clearance Token</label>
+            <div class="input-wrapper">
+              <i class="bi bi-key"></i>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                [(ngModel)]="password"
+                required
+                placeholder="••••••••••••"
+                [disabled]="isLoading"
+              />
+            </div>
+          </div>
+
+          <div class="form-utils">
+            <label class="custom-checkbox">
+              <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" [disabled]="isLoading">
+              <span class="checkmark"></span>
+              Persist Session
+            </label>
+            <a (click)="onForgotPasswordClick()" class="text-link">Key Recovery</a>
+          </div>
+
+          @if (errorMessage) {
+            <div class="auth-error">
+              <i class="bi bi-exclamation-octagon"></i>
+              {{ errorMessage }}
+            </div>
+          }
+
+          <button type="submit" class="login-btn" [disabled]="isLoading">
+            @if (!isLoading) {
+              <span>Initiate Authorization</span>
+              <i class="bi bi-arrow-right-short"></i>
+            } @else {
+              <div class="btn-spinner"></div>
+              <span>Validating...</span>
+            }
+          </button>
+        </form>
+
+        <footer class="form-footer">
+          <p>New personnel seeking clearance? <a (click)="onSignupClick()" class="brand-link">Request Enrollment</a></p>
+        </footer>
       </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          required
-          placeholder="Enter your password"
-          [disabled]="isLoading"
-        />
-      </div>
-
-      <div class="form-group checkbox-group">
-        <label class="checkbox-label">
-          <input
-            type="checkbox"
-            [(ngModel)]="rememberMe"
-            name="rememberMe"
-            [disabled]="isLoading"
-          />
-          Remember me
-        </label>
-      </div>
-
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
-
-      <button type="submit" class="auth-btn" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Login</span>
-        <span *ngIf="isLoading">Logging in...</span>
-      </button>
-    </form>
-
-    <div class="auth-links">
-      <p class="signup-redirect">
-        Don't have an account?
-        <a (click)="onSignupClick()" class="link">Sign up</a>
-      </p>
-      <p class="forgot-password">
-        <a (click)="onForgotPasswordClick()" class="link">Forgot password?</a>
-      </p>
     </div>
 
-    <div class="demo-credentials">
-      <p><strong>Demo Credentials:</strong></p>
-      <p>Email: admin&#64;disaster-ready.com</p>
-      <p>Password: password</p>
+    <!-- Right Section: Branding & Demo Info -->
+    <div class="login-section-branding">
+      <div class="branding-overlay"></div>
+      <div class="branding-content">
+        <div class="system-status">
+          <div class="status-dot"></div>
+          <span>GRID STATUS: NOMINAL</span>
+        </div>
+
+        <div class="quote-block">
+          <h2>"Resilience through coordination."</h2>
+          <p>Global Disaster Management Matrix</p>
+        </div>
+
+        @if (isDevMode) {
+          <div class="demo-access-card">
+            <div class="card-glow"></div>
+            <header>
+              <i class="bi bi-terminal"></i>
+              <h3>Sandbox Access</h3>
+            </header>
+            <div class="credential-box">
+              <div class="cred">
+                <span class="label">ID</span>
+                <span class="val">admin&#64;disaster-ready.com</span>
+              </div>
+              <div class="cred">
+                <span class="label">TOKEN</span>
+                <span class="val">password</span>
+              </div>
+            </div>
+            <button (click)="fillDemoCredentials()" class="autofill-btn">
+              <i class="bi bi-magic"></i> Apply Credentials
+            </button>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>

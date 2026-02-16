@@ -28,79 +28,80 @@ export const routes: Routes = [
   { path: 'signup', component: Signup },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'reset-password', component: ResetPasswordComponent },
-  
+
   // Protected routes (auth required)
-  { 
-    path: '', 
-    component: Dashboard, 
-    canActivate: [AuthGuard] 
+  {
+    path: '',
+    component: Dashboard,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'dashboard', 
-    component: Dashboard, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'dashboard',
+    component: Dashboard,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'live-disaster-map', 
-    component: LiveDisasterMap, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'live-disaster-map', // Shows density heatmaps and incident markers
+    component: LiveDisasterMap,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'alert-notification', 
-    component: AlertNotification, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'alert-notification',
+    component: AlertNotification,
+    canActivate: [AuthGuard],
+    data: { isToast: false } // Important: Treat as persistent page
   },
-  { 
-    path: 'incident-reporting', 
-    component: IncidentReporting, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'incident-reporting',
+    component: IncidentReporting,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'resource-allocation', 
-    component: ResourceAllocation, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'resource-allocation',
+    component: ResourceAllocation,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'resource-overview', 
-    component: ResourceOverview, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'resource-overview',
+    component: ResourceOverview,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'people-shelter-management', 
-    component: PeopleShelterManagement, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'people-shelter-management',
+    component: PeopleShelterManagement,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'analytics-heatmaps', 
-    component: AnalyticsHeatmaps, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'analytics-heatmaps',
+    component: AnalyticsHeatmaps,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'calendar', 
-    component: CalendarComponent, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'calendar',
+    component: CalendarComponent,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'customize-kit', 
-    component: CustomizeKit, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'customize-kit',
+    component: CustomizeKit,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'change-password', 
-    component: ChangePassword, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'change-password',
+    component: ChangePassword,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'profile', 
-    component: Profile, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'profile',
+    component: Profile,
+    canActivate: [AuthGuard]
   },
-  { 
-    path: 'disaster-report-form', 
-    component: DisasterReportForm, 
-    canActivate: [AuthGuard] 
+  {
+    path: 'disaster-report-form',
+    component: DisasterReportForm,
+    canActivate: [AuthGuard]
   },
-  
+
   // Redirect to dashboard for any unmatched routes
   { path: '**', redirectTo: '/dashboard' }
 ];

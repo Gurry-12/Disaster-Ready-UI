@@ -1,0 +1,161 @@
+[
+  {
+    "id": "shelter-001",
+    "name": "Central Community Center",
+    "type": "community_center",
+    "status": "operational",
+    "capacity": {
+      "total": 300,
+      "occupied": 180,
+      "available": 120,
+      "families": 30,
+      "individuals": 60
+    },
+    "location": {
+      "latitude": 20.612,
+      "longitude": 78.965,
+      "address": "123 Main St",
+      "city": "Nagpur",
+      "state": "Maharashtra"
+    },
+    "amenities": [
+      { "type": "food", "available": true },
+      { "type": "water", "available": true },
+      { "type": "medical_facility", "available": true },
+      { "type": "sanitation", "available": true }
+    ],
+    "contact": {
+      "name": "John Doe",
+      "phone": "+91 9876543210",
+      "role": "Manager"
+    },
+    "accessibility": {
+      "wheelchairAccessible": true,
+      "elevatorAvailable": true,
+      "signLanguageSupport": false,
+      "brailleSignage": true,
+      "accessibleRestrooms": true,
+      "ramps": true
+    },
+    "managedBy": "City Council",
+    "lastUpdated": 1708060800000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "shelter-002",
+    "name": "Govt High School South",
+    "type": "school",
+    "status": "near_capacity",
+    "capacity": {
+      "total": 150,
+      "occupied": 135,
+      "available": 15
+    },
+    "location": {
+      "latitude": 20.585,
+      "longitude": 78.942,
+      "address": "Education Lane 5",
+      "city": "Nagpur",
+      "state": "Maharashtra"
+    },
+    "amenities": [
+      { "type": "food", "available": true },
+      { "type": "water", "available": true },
+      { "type": "sanitation", "available": true }
+    ],
+    "contact": {
+      "name": "Sarah Smith",
+      "phone": "+91 9876543211",
+      "role": "Coordinator"
+    },
+    "accessibility": {
+      "wheelchairAccessible": true,
+      "elevatorAvailable": false,
+      "ramps": true,
+      "accessibleRestrooms": true,
+      "signLanguageSupport": false,
+      "brailleSignage": false
+    },
+    "managedBy": "Red Cross",
+    "lastUpdated": 1708060800000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "shelter-003",
+    "name": "Riverside Relief Camp",
+    "type": "relief_camp",
+    "status": "full",
+    "capacity": {
+      "total": 500,
+      "occupied": 500,
+      "available": 0
+    },
+    "location": {
+      "latitude": 20.635,
+      "longitude": 78.988,
+      "address": "River Bank Sector A",
+      "city": "Nagpur",
+      "state": "Maharashtra"
+    },
+    "amenities": [
+      { "type": "food", "available": true },
+      { "type": "water", "available": true },
+      { "type": "medical_facility", "available": true }
+    ],
+    "contact": {
+      "name": "Amit Patel",
+      "phone": "+91 9876543212",
+      "role": "Site Lead"
+    },
+    "accessibility": {
+      "wheelchairAccessible": false,
+      "elevatorAvailable": false,
+      "ramps": false,
+      "accessibleRestrooms": false,
+      "signLanguageSupport": false,
+      "brailleSignage": false
+    },
+    "managedBy": "NDRF",
+    "lastUpdated": 1708060800000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "shelter-004",
+    "name": "St. Mary's Sports Complex",
+    "type": "sports_complex",
+    "status": "operational",
+    "capacity": {
+      "total": 400,
+      "occupied": 120,
+      "available": 280
+    },
+    "location": {
+      "latitude": 20.601,
+      "longitude": 78.921,
+      "address": "Church Road 12",
+      "city": "Nagpur",
+      "state": "Maharashtra"
+    },
+    "amenities": [
+      { "type": "water", "available": true },
+      { "type": "sanitation", "available": true },
+      { "type": "electricity", "available": true }
+    ],
+    "contact": {
+      "name": "David Wilson",
+      "phone": "+91 9876543213",
+      "role": "Facility Manager"
+    },
+    "accessibility": {
+      "wheelchairAccessible": true,
+      "elevatorAvailable": true,
+      "ramps": true,
+      "accessibleRestrooms": true,
+      "signLanguageSupport": true,
+      "brailleSignage": true
+    },
+    "managedBy": "Sports Authority",
+    "lastUpdated": 1708060800000,
+    "syncStatus": "synced"
+  }
+]

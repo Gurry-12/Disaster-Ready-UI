@@ -13,7 +13,14 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "dexie": [
+        "node_modules/dexie/dist/dexie.d.ts"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

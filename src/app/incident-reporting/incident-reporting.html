@@ -1,29 +1,124 @@
-<div class="container">
-  <form class="incident-form">
-    <h2>Report an Incident</h2>
+<div class="reporting-page">
+  <div class="page-header">
+    <h2><i class="bi bi-megaphone-fill"></i> Incident Dispatch</h2>
+    <p>Rapidly log and categorize regional emergencies for prioritized response.</p>
+  </div>
 
-    <label for="type">Incident Type</label>
-    <select id="type" required>
-      <option disabled selected>Select Type</option>
-      <option>Flood</option>
-      <option>Fire</option>
-      <option>Earthquake</option>
-      <option>Storm</option>
-      <option>Landslide</option>
-    </select>
+  <div class="reporting-grid">
+    <!-- Main Reporting Form -->
+    <div class="form-card col-span-2">
+      <div class="card-header">
+        <h3>Report New Emergency</h3>
+        <div class="location-banner" [ngClass]="locationStatus">
+          <div class="status-indicator">
+            @if (locationStatus === 'locating') { <div class="spinner-tiny"></div> }
+            @else if (locationStatus === 'success') { <i class="bi bi-geo-alt-fill"></i> }
+            @else { <i class="bi bi-exclamation-triangle-fill"></i> }
+          </div>
+          <div class="location-details">
+            @if (locationStatus === 'locating') { <span>Acquiring GPS...</span> }
+            @else if (locationStatus === 'success') { <span>{{ currentLocation?.lat | number:'1.4-4' }}, {{ currentLocation?.lng | number:'1.4-4' }}</span> }
+            @else { <span>GPS Unavailable</span> }
+          </div>
+          @if (locationStatus === 'error') {
+            <button (click)="getCurrentLocation()" class="btn-icon"><i class="bi bi-arrow-clockwise"></i></button>
+          }
+        </div>
+      </div>
 
-    <label for="desc">Description</label>
-    <textarea id="desc" rows="3" placeholder="Describe the incident..." required></textarea>
+      <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()" class="bento-form">
+        <!-- Type Selection Tiles -->
+        <div class="form-group">
+          <label>Emergency Category</label>
+          <div class="type-tiles">
+            @for (type of incidentTypes; track type) {
+              <div class="type-tile" 
+                [class.active]="incidentForm.get('type')?.value === type"
+                (click)="incidentForm.patchValue({type: type})">
+                <i class="bi" [ngClass]="getTypeIcon(type)"></i>
+                <span>{{ type | titlecase }}</span>
+              </div>
+            }
+          </div>
+        </div>
 
-    <button type="submit">Report Incident</button>
-  </form>
+        <div class="form-row">
+          <!-- Severity Toggle -->
+          <div class="form-group">
+            <label>Severity Level</label>
+            <div class="severity-toggle">
+              @for (sev of severities; track sev) {
+                <button type="button" 
+                  [class.active]="incidentForm.get('severity')?.value === sev"
+                  [ngClass]="sev.toLowerCase()"
+                  (click)="incidentForm.patchValue({severity: sev})">
+                  {{ sev }}
+                </button>
+              }
+            </div>
+          </div>
 
-  <div class="incident-list">
-    <h2>Recent Incidents</h2>
-    <div class="incident-item flood">🌊 Flood reported in Zone 3</div>
-    <div class="incident-item fire">🔥 Fire reported in Zone 1</div>
-    <div class="incident-item earthquake">🌍 Earthquake detected in Zone 5</div>
-    <div class="incident-item storm">⛈️ Storm warning issued for Zone 2</div>
-    <div class="incident-item landslide">🏔️ Landslide reported in Zone 6</div>
+          <div class="form-group">
+            <label>Impacted Population (Est.)</label>
+            <input type="number" formControlName="affectedPopulation" placeholder="Approx number">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Brief Title</label>
+          <input type="text" formControlName="title" placeholder="e.g. Flash flood at Sector 7 bridge">
+        </div>
+
+        <div class="form-group">
+          <label>Operational Details</label>
+          <textarea formControlName="description" rows="3" placeholder="Describe the scene, casualties, and access barriers..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="dispatch-btn" [disabled]="incidentForm.invalid || (loading$ | async)">
+            @if (loading$ | async) {
+              <span class="spinner-sm"></span> Publishing...
+            } @else {
+              <i class="bi bi-send-fill"></i> Disseminate Report
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Recent Logs Card -->
+    <div class="activity-card col-span-1">
+      <div class="card-header">
+        <h3>Live Dispatch Log</h3>
+        @if (lastSync$ | async; as sync) {
+          <span class="sync-badge"><i class="bi bi-arrow-repeat"></i> {{ sync | date:'shortTime' }}</span>
+        }
+      </div>
+
+      <div class="log-stream">
+        @for (incident of recentIncidents$ | async; track incident.id) {
+          <div class="log-entry" [ngClass]="incident.severity.toLowerCase()">
+            <div class="entry-icon">
+              <i class="bi" [ngClass]="getTypeIcon(incident.type)"></i>
+            </div>
+            <div class="entry-content">
+              <div class="entry-header">
+                <h4>{{ incident.title }}</h4>
+                <span class="entry-time">{{ incident.reportedAt | date:'shortTime' }}</span>
+              </div>
+              <div class="entry-footer">
+                <span class="sev-tag">{{ incident.severity }}</span>
+                <span class="loc-tag"><i class="bi bi-geo-alt"></i> {{ incident.location.city || 'Zone X' }}</span>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-log">
+            <i class="bi bi-check-circle-fill"></i>
+            <p>No critical incidents reported in the last cycle.</p>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>

@@ -5,17 +5,24 @@ import { AuthService } from './auth/auth.service';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 
+import { AlertNotification } from './alert-notification/alert-notification';
+
+import { RealTimeService } from './core/services/real-time.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, RouterOutlet, RouterModule, NavbarComponent, FooterComponent, AlertNotification],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
 export class AppComponent {
   isAuthenticated = false;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private realTimeService: RealTimeService // Initialize simulation
+  ) {
     this.authService.isAuthenticated$.subscribe(
       isAuth => this.isAuthenticated = isAuth
     );

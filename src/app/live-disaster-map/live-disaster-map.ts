@@ -1,129 +1,228 @@
-import { Component, OnInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject, AfterViewInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { GoogleMapsModule, MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { environment } from '../../environments/environment';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import * as L from 'leaflet';
+// Importing leaflet.heat to extend L immediately
+import 'leaflet.heat';
+
+import * as IncidentActions from '../store/incidents/incident.actions';
+import { selectAllIncidents } from '../store/incidents/incident.selectors';
+import { Incident } from '../store/models/incident.model';
 
 interface DisasterMarker {
-  position: google.maps.LatLngLiteral;
-  type: string;
-  label: string;
-  options: google.maps.MarkerOptions; // Remove the optional marker (?) to make it required
+    id: string;
+    position: { lat: number; lng: number };
+    type: string;
+    title: string;
+    description: string;
+    location: string;
+    leafletMarker?: L.Marker;
 }
 
+import { LoggerService } from '../shared/services/logger.service';
+
 @Component({
-  selector: 'app-live-disaster-map',
-  standalone: true,
-  imports: [CommonModule, GoogleMapsModule],
-  templateUrl: './live-disaster-map.html',
-  styleUrls: ['./live-disaster-map.css']
+    selector: 'app-live-disaster-map',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './live-disaster-map.html',
+    styleUrls: ['./live-disaster-map.css']
 })
-export class LiveDisasterMap implements OnInit {
-  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
-  
-  // Add a flag to track if the API is loaded
-  apiLoaded: boolean = false;
-  
-  // Google Maps options
-  center: google.maps.LatLngLiteral = { lat: 22.9734, lng: 78.6569 };
-  zoom = 5;
-  options: google.maps.MapOptions = {
-    mapTypeId: 'roadmap',
-    zoomControl: true,
-    scrollwheel: true,
-    disableDoubleClickZoom: false,
-    maxZoom: 20,
-    minZoom: 3,
-    streetViewControl: true,
-    mapTypeControl: true,
-  };
-  
-  // Disaster data
-  disasters: DisasterMarker[] = [
-    {
-      position: { lat: 28.6139, lng: 77.2090 }, 
-      type: 'flood', 
-      label: 'Flood in New Delhi',
-      options: {} // Replace undefined with empty object
-    },
-    { 
-      position: { lat: 19.0760, lng: 72.8777 }, 
-      type: 'fire', 
-      label: 'Fire in Mumbai',
-      options: {} // Add options property
-    },
-    { 
-      position: { lat: 26.9124, lng: 75.7873 }, 
-      type: 'earthquake', 
-      label: 'Earthquake in Jaipur',
-      options: {} // Add options property
-    },
-    { 
-      position: { lat: 13.0827, lng: 80.2707 }, 
-      type: 'cyclone', 
-      label: 'Cyclone in Chennai',
-      options: {} // Add options property
+export class LiveDisasterMap implements OnInit, AfterViewInit, OnDestroy {
+    private store = inject(Store);
+    private logger = inject(LoggerService);
+    private destroy$ = new Subject<void>();
+    private platformId = inject(PLATFORM_ID);
+
+    private map!: L.Map;
+    private markerLayer = L.layerGroup();
+
+    allDisasters: DisasterMarker[] = [];
+    filteredDisasters: DisasterMarker[] = [];
+    selectedDisaster: DisasterMarker | null = null;
+    showHeatmap = false;
+    private heatLayer: any;
+
+    ngOnInit(): void {
+        this.store.dispatch(IncidentActions.loadIncidents());
     }
-  ];
-  
-  // Marker options for different disaster types
-  markerOptions = {
-    flood: { icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png' },
-    fire: { icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' },
-    earthquake: { icon: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png' },
-    cyclone: { icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png' }
-  };
-  
-  // Active info window content
-  activeInfoContent = '';
-  
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
-  
-  ngOnInit(): void {
-    // Load the Google Maps API dynamically
-    if (isPlatformBrowser(this.platformId)) {
-      this.loadGoogleMapsAPI().then(() => {
-        this.apiLoaded = true;
-        // Prepare marker options
-        this.disasters = this.disasters.map(disaster => ({
-          ...disaster,
-          options: this.markerOptions[disaster.type as keyof typeof this.markerOptions] || {}
-        }));
-      });
+
+    ngAfterViewInit(): void {
+        if (isPlatformBrowser(this.platformId)) {
+            // Slight delay to ensure DOM is ready
+            setTimeout(() => {
+                this.initMap();
+                this.subscribeToIncidents();
+            }, 100);
+        }
     }
-  }
-  
-  private loadGoogleMapsAPI(): Promise<void> {
-    return new Promise<void>((resolve) => {
-      if (window.google && window.google.maps) {
-        resolve();
-        return;
-      }
-      
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.mapApiKey}`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        resolve();
-      };
-      document.head.appendChild(script);
-    });
-  }
-  
-  // Update the method signature to accept a MapMarker
-  openInfoWindow(marker: MapMarker | any, disaster: DisasterMarker): void {
-    this.activeInfoContent = disaster.label;
-    if (marker instanceof MapMarker) {
-      this.infoWindow.open(marker);
+
+    ngOnDestroy(): void {
+        if (this.map) {
+            this.map.remove();
+        }
+        this.destroy$.next();
+        this.destroy$.complete();
     }
-  }
-  
-  // Filter markers by type
-  filterMarkers(type: string): void {
-    this.disasters.forEach(disaster => {
-      if (disaster.options) {
-        disaster.options.visible = type === 'all' || disaster.type === type;
-      }
-    });
-  }
+
+    private initMap(): void {
+        if (this.map) return; // Prevent multiple initializations
+
+        this.map = L.map('map', {
+            center: [20.5937, 78.9629], // India Center
+            zoom: 5,
+            zoomControl: false
+        });
+
+        // Dark Matter Tile Layer (Tactical Look)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(this.map);
+
+        this.markerLayer.addTo(this.map);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+    }
+
+    private subscribeToIncidents(): void {
+        this.store.select(selectAllIncidents)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(incidents => {
+                this.processIncidents(incidents);
+            });
+    }
+
+    private processIncidents(incidents: Incident[]): void {
+        if (!this.map) return;
+
+        this.markerLayer.clearLayers();
+
+        this.allDisasters = incidents.map(incident => {
+            const marker: DisasterMarker = {
+                id: incident.id,
+                position: {
+                    lat: incident.location?.latitude || 0,
+                    lng: incident.location?.longitude || 0
+                },
+                type: incident.type,
+                title: incident.title || incident.type,
+                description: incident.description,
+                location: incident.location?.address || `${incident.location?.city || 'Unknown City'}, ${incident.location?.state || ''}`
+            };
+
+            // Create Tactical Leaflet Marker
+            const lMarker = L.marker([marker.position.lat, marker.position.lng], {
+                icon: this.createTacticalIcon(marker.type)
+            });
+
+            lMarker.on('click', () => {
+                // Angular change detection manual trigger might be needed if zone issues occur,
+                // but usually click handlers inside zone work fine. 
+                // We just update the state.
+                this.selectedDisaster = marker;
+            });
+
+            marker.leafletMarker = lMarker;
+            lMarker.addTo(this.markerLayer);
+
+            return marker;
+        });
+
+        this.filteredDisasters = [...this.allDisasters];
+        this.updateHeatmap();
+    }
+
+    private updateHeatmap(): void {
+        if (!this.map) return;
+
+        // Leaflet.heat expects [lat, lng, intensity]
+        const heatPoints = this.allDisasters.map(d => [d.position.lat, d.position.lng, 0.8]);
+
+        if (this.heatLayer) {
+            this.map.removeLayer(this.heatLayer);
+        }
+
+        // @ts-ignore
+        if (typeof L.heatLayer === 'function') {
+            // @ts-ignore
+            this.heatLayer = L.heatLayer(heatPoints, {
+                radius: 30,
+                blur: 20,
+                maxZoom: 10,
+                gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
+            });
+
+            if (this.showHeatmap) {
+                this.heatLayer.addTo(this.map);
+            }
+        }
+    }
+
+    toggleHeatmap(): void {
+        this.showHeatmap = !this.showHeatmap;
+        if (!this.map) return;
+
+        if (this.showHeatmap) {
+            if (this.heatLayer) this.heatLayer.addTo(this.map);
+            this.map.removeLayer(this.markerLayer);
+        } else {
+            if (this.heatLayer) this.map.removeLayer(this.heatLayer);
+            this.markerLayer.addTo(this.map);
+        }
+    }
+
+    private createTacticalIcon(type: string): L.DivIcon {
+        const colorMap: { [key: string]: string } = {
+            'Flood': '#3b82f6',
+            'Fire': '#ef4444',
+            'Earthquake': '#f59e0b',
+            'Cyclone': '#10b981'
+        };
+
+        const color = colorMap[type] || '#6366f1';
+
+        return L.divIcon({
+            className: 'tactical-marker',
+            html: `
+                <div style="position: relative; width: 40px; height: 40px;">
+                    <div class="marker-pulse" style="background: ${color}; box-shadow: 0 0 15px ${color}"></div>
+                    <div class="marker-core" style="background: ${color}"></div>
+                </div>
+            `,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+        });
+    }
+
+    filterMarkers(type: string): void {
+        if (!this.map) return;
+
+        this.markerLayer.clearLayers();
+
+        if (type === 'all') {
+            this.filteredDisasters = [...this.allDisasters];
+        } else {
+            this.filteredDisasters = this.allDisasters.filter(d => d.type === type);
+        }
+
+        this.filteredDisasters.forEach(d => {
+            if (d.leafletMarker) {
+                d.leafletMarker.addTo(this.markerLayer);
+            }
+        });
+
+        // Dynamic fit bounds
+        if (this.filteredDisasters.length > 0) {
+            try {
+                const group = L.featureGroup(this.filteredDisasters.map(d => d.leafletMarker!).filter(m => !!m));
+                this.map.fitBounds(group.getBounds(), { padding: [50, 50], maxZoom: 10 });
+            } catch (e) {
+                this.logger.warn('Error fitting bounds', e);
+            }
+        }
+    }
 }

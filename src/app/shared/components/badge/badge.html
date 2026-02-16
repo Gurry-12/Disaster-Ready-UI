@@ -1,0 +1,6 @@
+<span class="badge" [ngClass]="[type, variant]">
+  @if (icon) {
+    <i [class]="'bi ' + icon"></i>
+  }
+  <ng-content>{{ label }}</ng-content>
+</span>

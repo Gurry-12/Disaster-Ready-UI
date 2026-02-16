@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user.model';
 import { LoginRequest, LoginResponse, SignupRequest, ForgotPasswordRequest, ResetPasswordRequest } from '../shared/models/login-request.model';
+import { environment } from '../../environments/environment';
+import { LoggerService } from '../shared/services/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,10 @@ export class AuthService {
   public token$ = this.tokenSubject.asObservable();
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private logger: LoggerService
+  ) {
     this.loadStoredAuth();
   }
 
@@ -34,11 +39,17 @@ export class AuthService {
   }
 
   // Login method
+  // TODO: Replace with actual API call to backend authentication service
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    // Simulate API call
+    // WARNING: This is a mock implementation for development only
+    // In production, this MUST call a secure backend API
     return new Observable(observer => {
       setTimeout(() => {
-        if (loginRequest.email === 'admin@disaster-ready.com' && loginRequest.password === 'password') {
+        // SECURITY: Never hardcode credentials in production
+        // This is for development/demo purposes only
+        const isDemoMode = !environment.production;
+
+        if (isDemoMode && loginRequest.email === 'admin@disaster-ready.com' && loginRequest.password === 'password') {
           const mockResponse: LoginResponse = {
             user: {
               id: 1,
@@ -46,7 +57,7 @@ export class AuthService {
               name: 'Admin User',
               role: 'admin'
             },
-            token: 'mock-jwt-token-' + Date.now(),
+            token: this.generateMockJWT(loginRequest.email, 3600),
             refreshToken: 'mock-refresh-token-' + Date.now(),
             expiresIn: 3600
           };
@@ -59,6 +70,18 @@ export class AuthService {
         }
       }, 1000);
     });
+  }
+
+  // Generate a mock JWT token with proper structure for development
+  private generateMockJWT(email: string, expiresIn: number): string {
+    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+    const payload = btoa(JSON.stringify({
+      email: email,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + expiresIn
+    }));
+    const signature = btoa('mock-signature-' + Date.now());
+    return `${header}.${payload}.${signature}`;
   }
 
   // Signup method
@@ -129,10 +152,35 @@ export class AuthService {
   isTokenValid(): boolean {
     const token = this.token;
     if (!token) return false;
-    
-    // In a real app, you'd decode and check expiration
-    // For now, just check if token exists
-    return true;
+
+    try {
+      // Decode JWT token and check expiration
+      const parts = token.split('.');
+      if (parts.length !== 3) return false;
+
+      // Decode payload (second part of JWT)
+      const payload = JSON.parse(atob(parts[1]));
+
+      // Check if token has expiration
+      if (!payload.exp) return false;
+
+      // Check if token is expired (exp is in seconds, Date.now() is in milliseconds)
+      const currentTime = Math.floor(Date.now() / 1000);
+      const isExpired = payload.exp < currentTime;
+
+      if (isExpired) {
+        // Token is expired, clear auth state
+        this.clearAuth();
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      // Invalid token format
+      this.logger.error('Token validation failed', error);
+      this.clearAuth();
+      return false;
+    }
   }
 
   // Private methods
@@ -146,6 +194,8 @@ export class AuthService {
       createdAt: new Date(),
       lastLogin: new Date()
     };
+
+    this.logger.logAuthEvent('Login successful', user.id);
 
     this.currentUserSubject.next(user);
     this.tokenSubject.next(response.token);
@@ -174,12 +224,17 @@ export class AuthService {
   }
 
   private clearAuth(): void {
+    const user = this.currentUser;
+    if (user) {
+      this.logger.logAuthEvent('Logout', user.id);
+    }
+
     this.currentUserSubject.next(null);
     this.tokenSubject.next(null);
     this.isAuthenticatedSubject.next(false);
-    
+
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
   }
-} 
+}

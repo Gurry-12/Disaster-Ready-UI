@@ -1,0 +1,27 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark Blue Background Circle -->
+  <circle cx="128" cy="128" r="128" fill="#1e293b"/>
+  
+  <!-- Orange Shield -->
+  <path d="M128 220 
+           C128 220, 50 190, 50 110 
+           V50 
+           L128 20 
+           L206 50 
+           V110 
+           C206 190, 128 220, 128 220 
+           Z" 
+        stroke="#f97316" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linejoin="round"
+        stroke-linecap="round"/>
+        
+  <!-- White Pulse Line -->
+  <path d="M40 128 H85 L105 168 L145 88 L165 128 H216" 
+        stroke="#ffffff" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>

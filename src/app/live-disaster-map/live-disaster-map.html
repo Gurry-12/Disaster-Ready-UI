@@ -1,35 +1,72 @@
-<!-- live-disaster-map.html -->
 <div class="live-map-container">
-  <h2>🌍 Live Disaster Map</h2>
-  <p class="map-subtitle">Real-time incident tracking across India</p>
-  
-  <div class="map-controls">
-    <button (click)="filterMarkers('all')" class="control-btn all">All Disasters</button>
-    <button (click)="filterMarkers('flood')" class="control-btn flood">Floods</button>
-    <button (click)="filterMarkers('fire')" class="control-btn fire">Fires</button>
-    <button (click)="filterMarkers('earthquake')" class="control-btn earthquake">Earthquakes</button>
-    <button (click)="filterMarkers('cyclone')" class="control-btn cyclone">Cyclones</button>
-  </div>
-  
-  <div *ngIf="!apiLoaded" class="loading-map">Loading map...</div>
-  
-  <google-map
-    *ngIf="apiLoaded"
-    height="500px"
-    width="100%"
-    [center]="center"
-    [zoom]="zoom"
-    [options]="options"
-    class="google-map">
-    
-    <map-marker
-      *ngFor="let disaster of disasters"
-      [position]="disaster.position"
-      [options]="disaster.options"
-      (mapClick)="openInfoWindow(marker, disaster)"
-      #marker>
-    </map-marker>
-    
-    <map-info-window>{{ activeInfoContent }}</map-info-window>
-  </google-map>
-</div>
+    <div class="map-header">
+        <div class="header-content">
+            <h2>🌍 Live Disaster Map</h2>
+            <p>Real-time tactical overview of ongoing incidents across regions.</p>
+        </div>
+        <div class="map-controls">
+            <div class="filter-group">
+                <button (click)="filterMarkers('all')" [class.active]="filteredDisasters.length === allDisasters.length" class="control-btn all">
+                    <i class="bi bi-grid-fill"></i> All
+                </button>
+                <button (click)="filterMarkers('Flood')" class="control-btn flood">
+                    <i class="bi bi-water"></i> Floods
+                </button>
+                <button (click)="filterMarkers('Fire')" class="control-btn fire">
+                    <i class="bi bi-fire"></i> Fires
+                </button>
+                <button (click)="filterMarkers('Earthquake')" class="control-btn earthquake">
+                    <i class="bi bi-activity"></i> Quakes
+                </button>
+                <button (click)="filterMarkers('Cyclone')" class="control-btn cyclone">
+                    <i class="bi bi-tornado"></i> Cyclones
+                </button>
+            </div>
+            <div class="toggle-group">
+                <button (click)="toggleHeatmap()" [class.active]="showHeatmap" class="control-btn heatmap-toggle">
+                    <i class="bi bi-layers-half"></i> {{ showHeatmap ? 'Hide Heatmap' : 'Show Heatmap' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-wrapper">
+        <div id="map" class="tactical-map"></div>
+        
+        <!-- Optional Overlay for Selected Incident -->
+        <div *ngIf="selectedDisaster" class="incident-card-overlay">
+            <div class="card-header">
+                <span class="badge" [ngClass]="selectedDisaster.type.toLowerCase()">{{ selectedDisaster.type }}</span>
+                <button (click)="selectedDisaster = null" class="close-btn"><i class="bi bi-x"></i></button>
+            </div>
+            <h3>{{ selectedDisaster.title }}</h3>
+            <p class="location-text"><i class="bi bi-geo-alt-fill"></i> {{ selectedDisaster.location }}</p>
+            <p class="description-text">{{ selectedDisaster.description }}</p>
+            <div class="card-actions">
+                <button class="action-btn primary">Dispatch</button>
+                <button class="action-btn secondary">Details</button>
+            </div>
+        </div>
+        
+        <div class="map-legend">
+            <h4><i class="bi bi-info-circle"></i> Legend</h4>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <span class="dot" style="background: #3b82f6; box-shadow: 0 0 10px #3b82f6"></span>
+                    <span>Flood</span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot" style="background: #ef4444; box-shadow: 0 0 10px #ef4444"></span>
+                    <span>Fire</span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot" style="background: #f59e0b; box-shadow: 0 0 10px #f59e0b"></span>
+                    <span>Earthquake</span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot" style="background: #10b981; box-shadow: 0 0 10px #10b981"></span>
+                    <span>Cyclone</span>
+                </div>
+            </div>
+        </div>
+    </div>

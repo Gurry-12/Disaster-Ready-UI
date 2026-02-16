@@ -1,19 +1,104 @@
-<div class="container">
-  <div class="resource-container">
-    <div class="resource-title">Resource Overview</div>
-    <table class="resource-table">
-      <tr><th>Type</th><th>Status</th><th>Quantity</th></tr>
-      <tr *ngFor="let item of resources">
-        <td>{{ item.type }}</td>
-        <td>
-          <span class="badge" [ngClass]="{
-            'available': item.status === 'Available',
-            'deployed': item.status === 'Deployed',
-            'transit': item.status === 'In Transit'
-          }">{{ item.status }}</span>
-        </td>
-        <td>{{ item.quantity }}</td>
-      </tr>
-    </table>
+<div class="asset-dashboard">
+  <div class="page-header">
+    <div class="header-main">
+      <h2><i class="bi bi-boxes"></i> Global Asset Control</h2>
+      <p>Operational oversight of regional stockpiles, logistics units, and field deployment reserves.</p>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Inventory Matrix (Full Width) -->
+    <div class="matrix-sector">
+      <div class="sector-header">
+        <div class="sector-title">
+          <h3><i class="bi bi-list-ul"></i> Inventory Matrix</h3>
+          <span class="matrix-badge">Synchronized</span>
+        </div>
+        
+        <div class="matrix-actions">
+          <div class="search-shield">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Filter Assets..." #searchInput (input)="searchTerm$.next(searchInput.value)">
+          </div>
+          <div class="filter-shield">
+            <i class="bi bi-funnel"></i>
+            <select #statusSelect (change)="updateStatusFilter(statusSelect.value)">
+              @for (status of statusOptions; track status) {
+                <option [value]="status">{{ status | titlecase }} Status</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="matrix-table-container">
+        @if (resources$ | async; as resources) {
+          <table class="tactical-table">
+            <thead>
+              <tr>
+                <th>Asset Identity</th>
+                <th>Classification</th>
+                <th>Grid Status</th>
+                <th>Operational Reserve</th>
+                <th>Facility Assignment</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of resources; track item.id) {
+                <tr>
+                  <td class="primary-cell">
+                    <div class="asset-identity">
+                      <div class="type-icon">
+                        <i class="bi bi-box-seam"></i>
+                      </div>
+                      <div class="asset-info">
+                        <span class="asset-name">{{ item.name }}</span>
+                        <span class="asset-id">#{{ item.id.substring(0, 8).toUpperCase() }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="classification-tag">{{ item.type | titlecase }}</span>
+                  </td>
+                  <td>
+                    <span class="status-pill" [ngClass]="item.status">
+                      {{ item.status | titlecase }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="reserve-monitor">
+                      <span class="qty">{{ item.quantity }}</span>
+                      <span class="unit">{{ item.unit }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="facility-val">
+                      <i class="bi bi-geo-alt-fill"></i>
+                      {{ item.location.facilityName || 'Sector Hub' }}
+                    </div>
+                  </td>
+                </tr>
+              }
+              @empty {
+                <tr>
+                  <td colspan="5" class="matrix-empty">
+                    <div class="empty-content">
+                      <i class="bi bi-database-exclamation"></i>
+                      <h4>No Asset Correlation</h4>
+                      <p>No query matches found in central database for current filters.</p>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="loading-matrix">
+            <div class="spinner"></div>
+            <span>Syncing Grid Data...</span>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>

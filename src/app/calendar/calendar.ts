@@ -24,7 +24,7 @@ interface CalendarEvent {
 export class CalendarComponent {
   selectedView = signal<'month' | 'week' | 'year' | 'day'>('month');
   selectedDate = signal(new Date());
-  
+
   // Event management
   newEventTitle = '';
   newEventColor = 'blue';
@@ -33,9 +33,39 @@ export class CalendarComponent {
   newEventDescription = '';
   newEventLocation = '';
   newEventIsBroadcast = false;
-  
-  colors = ['red', 'blue', 'green', 'orange', 'purple', 'pink', 'teal', 'indigo'];
-  events: CalendarEvent[] = [];
+
+  colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#6366f1'];
+  events: CalendarEvent[] = [
+    {
+      id: 'mock-1',
+      title: 'Weekly Disaster Response Briefing',
+      date: new Date(),
+      startTime: '09:00',
+      endTime: '10:00',
+      color: '#3b82f6',
+      location: 'Main Command Room',
+      description: 'Reviewing incident protocols for the week.'
+    },
+    {
+      id: 'mock-2',
+      title: 'Resource Audit - Sector B',
+      date: new Date(),
+      startTime: '14:00',
+      endTime: '15:30',
+      color: '#8b5cf6',
+      location: 'Central Warehouse'
+    },
+    {
+      id: 'mock-3',
+      title: '⚠️ Severe Weather Warning - Region 4',
+      date: new Date(),
+      startTime: '11:00',
+      endTime: '20:00',
+      color: '#ef4444',
+      isBroadcast: true,
+      description: 'Incoming cyclone warning. Coordinate with local shelters.'
+    }
+  ];
 
   // Time slots for day view
   dayTimeSlots = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
@@ -45,10 +75,9 @@ export class CalendarComponent {
     const year = this.selectedDate().getFullYear();
     const month = this.selectedDate().getMonth();
     const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
     const startDate = new Date(firstDay);
     startDate.setDate(startDate.getDate() - firstDay.getDay());
-    
+
     const days = [];
     for (let i = 0; i < 42; i++) {
       const date = new Date(startDate);
@@ -177,20 +206,21 @@ export class CalendarComponent {
   }
 
   isCurrentMonth(date: Date) {
-    return date.getMonth() === this.selectedDate().getMonth() && 
-           date.getFullYear() === this.selectedDate().getFullYear();
+    return date.getMonth() === this.selectedDate().getMonth() &&
+      date.getFullYear() === this.selectedDate().getFullYear();
   }
 
   getMonthName(date: Date) {
     return date.toLocaleDateString('en-US', { month: 'short' });
   }
-  
-  isValidDayInMonth(day: number, month: Date) {
-    const date = new Date(month.getFullYear(), month.getMonth(), day);
-    return date.getMonth() === month.getMonth();
-  }
-  
+
   getDayEvents(date: Date) {
-    return this.getEventsForDate(date).slice(0, 3); // Show max 3 events per day
+    return this.getEventsForDate(date).slice(0, 3);
+  }
+
+  // Used in template to avoid constructing Date in HTML
+  isValidYearDay(month: Date, day: number): boolean {
+    const d = new Date(month.getFullYear(), month.getMonth(), day);
+    return d.getMonth() === month.getMonth();
   }
 }

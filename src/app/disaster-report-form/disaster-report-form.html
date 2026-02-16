@@ -1,1 +1,86 @@
-<p>disaster-report-form works!</p>
+<div class="sos-page">
+  <div class="page-header">
+    <div class="sos-badge">
+      <span class="pulse"></span> LIVE SOS TRANSMISSION
+    </div>
+    <h2>Rapid Incident Deployment</h2>
+    <p>Operational field report for immediate asset allocation and civilian safety.</p>
+  </div>
+
+  @if (!submitted) {
+    <div class="sos-card">
+      <form [formGroup]="reportForm" (ngSubmit)="submitReport()" class="sos-form">
+        <!-- Category Toggles -->
+        <div class="form-section">
+          <label class="section-label">Incident Classification</label>
+          <div class="category-grid">
+            @for (cat of categories; track cat.id) {
+              <button 
+                type="button" 
+                class="cat-tile" 
+                [class.active]="reportForm.get('incidentType')?.value === cat.id"
+                (click)="selectCategory(cat.id)"
+              >
+                <i [class]="cat.icon"></i>
+                <span>{{ cat.label }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="form-split">
+          <div class="form-group">
+            <label>Current Coordinates / Location</label>
+            <div class="input-with-icon">
+              <i class="bi bi-geo-alt"></i>
+              <input type="text" formControlName="location" placeholder="Street, landmark or Grid ID">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Priority Tier</label>
+            <div class="severity-toggle">
+              <button type="button" (click)="reportForm.patchValue({severity: 'low'})" [class.active]="reportForm.get('severity')?.value === 'low'" class="low">Minor</button>
+              <button type="button" (click)="reportForm.patchValue({severity: 'medium'})" [class.active]="reportForm.get('severity')?.value === 'medium'" class="medium">Urgent</button>
+              <button type="button" (click)="reportForm.patchValue({severity: 'high'})" [class.active]="reportForm.get('severity')?.value === 'high'" class="high">Critical</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Situation Assessment</label>
+          <textarea formControlName="description" rows="4" placeholder="Briefly describe the threat level, civilian presence, and immediate needs..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Field Contact #</label>
+          <div class="input-with-icon">
+            <i class="bi bi-telephone"></i>
+            <input type="text" formControlName="contactPhone" placeholder="+91 XXX XXX XXXX">
+          </div>
+        </div>
+
+        <button type="submit" class="submit-sos-btn" [disabled]="!reportForm.valid || isSubmitting">
+          @if (isSubmitting) {
+            <span class="spinner"></span> TRANSMITTING...
+          } @else {
+            <i class="bi bi-broadcast"></i> BROADCAST SOS PULSE
+          }
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="success-state">
+      <div class="success-icon">
+        <i class="bi bi-check2-all"></i>
+      </div>
+      <h3>SOS Successfully Transmitted</h3>
+      <p>Data has been synced with the Regional Dispatch Center. Local teams have been notified of Sector: <strong>{{ reportForm.value.location }}</strong>.</p>
+      
+      <div class="dispatch-id">
+        DISPATCH-ID: #{{ '8294' + '02' }}
+      </div>
+
+      <button (click)="resetForm()" class="return-btn">File New Report</button>
+    </div>
+  }
+</div>

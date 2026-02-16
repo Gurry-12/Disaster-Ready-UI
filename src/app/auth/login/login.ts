@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { LoginRequest } from '../../shared/models/login-request.model';
+import { environment } from '../../../environments/environment';
+
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Component({
   selector: 'app-login',
@@ -19,14 +22,21 @@ export class Login {
   isLoading = false;
   errorMessage = '';
   returnUrl = '/dashboard';
+  isDevMode = !environment.production;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private logger: LoggerService
   ) {
     // Get return url from route parameters or default to '/dashboard'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+  }
+
+  fillDemoCredentials() {
+    this.email = 'admin@disaster-ready.com';
+    this.password = 'password';
   }
 
   onLogin() {
@@ -47,13 +57,12 @@ export class Login {
     this.authService.login(loginRequest).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log('Login successful:', response);
         this.router.navigate([this.returnUrl]);
       },
       error: (error) => {
         this.isLoading = false;
         this.errorMessage = error.message || 'Login failed. Please check your credentials.';
-        console.error('Login error:', error);
+        this.logger.error('Login error', error);
       }
     });
   }

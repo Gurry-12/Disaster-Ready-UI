@@ -1,0 +1,98 @@
+[
+  {
+    "id": "res-001",
+    "name": "Emergency Water Packs",
+    "type": "food_water",
+    "category": "humanitarian",
+    "status": "available",
+    "quantity": 5000,
+    "unit": "liters",
+    "location": {
+      "latitude": 20.5937,
+      "longitude": 78.9629,
+      "facilityName": "Central Depot"
+    },
+    "lastUpdated": 1721385600000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "res-002",
+    "name": "Medical First Aid Kits",
+    "type": "medical_supplies",
+    "category": "medical",
+    "status": "deployed",
+    "quantity": 450,
+    "unit": "kits",
+    "location": {
+      "latitude": 21.1458,
+      "longitude": 79.0882,
+      "facilityName": "Mobile Unit 1"
+    },
+    "lastUpdated": 1721385600000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "res-003",
+    "name": "Rescue Boat",
+    "type": "vehicle",
+    "category": "emergency_response",
+    "status": "in_transit",
+    "quantity": 3,
+    "unit": "units",
+    "location": {
+      "latitude": 19.0760,
+      "longitude": 72.8777,
+      "facilityName": "Port Authority"
+    },
+    "lastUpdated": 1721385600000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "res-004",
+    "name": "Power Generator 50kW",
+    "type": "power_generator",
+    "category": "infrastructure",
+    "status": "maintenance",
+    "quantity": 2,
+    "unit": "units",
+    "location": {
+      "latitude": 28.6139,
+      "longitude": 77.2090,
+      "facilityName": "North Station"
+    },
+    "lastUpdated": 1721385600000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "res-005",
+    "name": "Blankets",
+    "type": "shelter_materials",
+    "category": "humanitarian",
+    "status": "available",
+    "quantity": 1200,
+    "unit": "pieces",
+    "location": {
+      "latitude": 13.0827,
+      "longitude": 80.2707,
+      "facilityName": "South Warehouse"
+    },
+    "lastUpdated": 1721385600000,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "res-006",
+    "name": "Satellite Phones",
+    "type": "communication",
+    "category": "emergency_response",
+    "status": "available",
+    "quantity": 25,
+    "unit": "sets",
+    "location": {
+      "latitude": 22.5726,
+      "longitude": 88.3639,
+      "facilityName": "East Comm Center"
+    },
+    "lastUpdated": 1721385600000,
+    "syncStatus": "synced"
+  }
+]

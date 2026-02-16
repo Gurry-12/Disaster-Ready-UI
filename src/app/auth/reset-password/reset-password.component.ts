@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { ResetPasswordRequest } from '../../shared/models/login-request.model';
 
+import { LoggerService } from '../../shared/services/logger.service';
+
 @Component({
   selector: 'app-reset-password',
   standalone: true,
@@ -23,7 +25,8 @@ export class ResetPasswordComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private logger: LoggerService
   ) {
     // Get token from route parameters
     this.token = this.route.snapshot.queryParams['token'] || '';
@@ -58,7 +61,7 @@ export class ResetPasswordComponent {
       error: (error) => {
         this.isLoading = false;
         this.errorMessage = error.message || 'Password reset failed. Please try again.';
-        console.error('Reset password error:', error);
+        this.logger.error('Reset password error', error);
       }
     });
   }

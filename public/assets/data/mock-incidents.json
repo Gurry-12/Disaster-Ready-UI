@@ -1,0 +1,86 @@
+[
+  {
+    "id": "inc-001",
+    "type": "flood",
+    "severity": "critical",
+    "status": "in_progress",
+    "title": "Severe Flooding in Mumbai",
+    "description": "Heavy rains caused waterlogging in downtown area. Need immediate evacuation assistance.",
+    "location": {
+      "latitude": 19.0760,
+      "longitude": 72.8777,
+      "city": "Mumbai",
+      "address": "Andheri East",
+      "accuracy": 50
+    },
+    "reportedBy": "Control Room",
+    "reportedAt": 1721558400000,
+    "updatedAt": 1721562000000,
+    "assignedResources": [],
+    "priority": 5,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "inc-002",
+    "type": "fire",
+    "severity": "high",
+    "status": "reported",
+    "title": "Industrial Fire in Delhi",
+    "description": "Chemical factory fire reported near Okhla. Fire brigade dispatched.",
+    "location": {
+      "latitude": 28.6139,
+      "longitude": 77.2090,
+      "city": "New Delhi",
+      "address": "Okhla Industrial Estate",
+      "accuracy": 20
+    },
+    "reportedBy": "Emergency Hotline",
+    "reportedAt": 1721565600000,
+    "updatedAt": 1721565600000,
+    "assignedResources": [],
+    "priority": 4,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "inc-003",
+    "type": "earthquake",
+    "severity": "medium",
+    "status": "acknowledged",
+    "title": "Seismic Activity in Gujarat",
+    "description": "Mild tremors felt in Bhuj region. Monitoring for aftershocks.",
+    "location": {
+      "latitude": 23.2420,
+      "longitude": 69.6669,
+      "city": "Bhuj",
+      "address": "Bhuj Region",
+      "accuracy": 1000
+    },
+    "reportedBy": "Seismic Center",
+    "reportedAt": 1721551200000,
+    "updatedAt": 1721554800000,
+    "assignedResources": [],
+    "priority": 3,
+    "syncStatus": "synced"
+  },
+  {
+    "id": "inc-004",
+    "type": "cyclone",
+    "severity": "high",
+    "status": "in_progress",
+    "title": "Cyclone Warning - Odisha Coast",
+    "description": "Cyclone approaching Paradip. Wind speeds 80kmph.",
+    "location": {
+      "latitude": 20.2644,
+      "longitude": 86.6667,
+      "city": "Paradip",
+      "address": "Coastal Zone",
+      "accuracy": 500
+    },
+    "reportedBy": "Met Dept",
+    "reportedAt": 1721572800000,
+    "updatedAt": 1721576400000,
+    "assignedResources": [],
+    "priority": 4,
+    "syncStatus": "synced"
+  }
+]

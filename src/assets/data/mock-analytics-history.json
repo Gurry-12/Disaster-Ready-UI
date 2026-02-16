@@ -1,0 +1,14 @@
+[
+  { "month": "Jan", "flood": 12, "fire": 5, "cyclone": 1, "earthquake": 0 },
+  { "month": "Feb", "flood": 8, "fire": 12, "cyclone": 2, "earthquake": 1 },
+  { "month": "Mar", "flood": 5, "fire": 20, "cyclone": 0, "earthquake": 2 },
+  { "month": "Apr", "flood": 2, "fire": 35, "cyclone": 1, "earthquake": 0 },
+  { "month": "May", "flood": 4, "fire": 45, "cyclone": 15, "earthquake": 1 },
+  { "month": "Jun", "flood": 50, "fire": 15, "cyclone": 25, "earthquake": 0 },
+  { "month": "Jul", "flood": 85, "fire": 5, "cyclone": 10, "earthquake": 3 },
+  { "month": "Aug", "flood": 70, "fire": 8, "cyclone": 5, "earthquake": 1 },
+  { "month": "Sep", "flood": 45, "fire": 12, "cyclone": 2, "earthquake": 2 },
+  { "month": "Oct", "flood": 25, "fire": 18, "cyclone": 8, "earthquake": 1 },
+  { "month": "Nov", "flood": 10, "fire": 10, "cyclone": 15, "earthquake": 4 },
+  { "month": "Dec", "flood": 15, "fire": 8, "cyclone": 5, "earthquake": 2 }
+]

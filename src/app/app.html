@@ -1,28 +1,54 @@
 <div class="app-container">
+  <app-alert-notification></app-alert-notification>
   <!-- Navbar for all pages -->
-  <app-navbar></app-navbar>
+  @if (isAuthenticated) {
+    <app-navbar></app-navbar>
+  }
 
   <!-- Main content area -->
   <div class="main-content">
-    <!-- Sidebar - only show for authenticated users -->
-    <aside class="sidebar" *ngIf="isAuthenticated">
-      <div class="sidebar-title">Disaster Ready</div>
-      <nav>
-        <ul>
-          <li><a [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a></li>
-          <li><a [routerLink]="['/live-disaster-map']" routerLinkActive="active">Live Disaster Map</a></li>
-          <li><a [routerLink]="['/alert-notification']" routerLinkActive="active">Alerts & Notifications</a></li>
-          <li><a [routerLink]="['/incident-reporting']" routerLinkActive="active">Incident Reporting</a></li>
-          <li><a [routerLink]="['/resource-allocation']" routerLinkActive="active">Resource Allocation</a></li>
-          <li><a [routerLink]="['/resource-overview']" routerLinkActive="active">Resource Overview</a></li>
-          <li><a [routerLink]="['/people-shelter-management']" routerLinkActive="active">People & Shelter Management</a></li>
-          <li><a [routerLink]="['/analytics-heatmaps']" routerLinkActive="active">Analytics & Heatmaps</a></li>
-          <li><a [routerLink]="['/calendar']" routerLinkActive="active">Calendar</a></li>
-          <li><a [routerLink]="['/customize-kit']" routerLinkActive="active">Customize Kit</a></li>
-          <li><a [routerLink]="['/disaster-report-form']" routerLinkActive="active">Report Form</a></li>
-        </ul>
-      </nav>
-    </aside>
+@if (isAuthenticated) {
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-box">
+        <i class="bi bi-shield-fill-check"></i>
+      </div>
+      <div class="brand-info">
+        <span class="brand-name">Guardian</span>
+        <span class="brand-tag">Ops Hub</span>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section">Operational</div>
+      <ul>
+        <li><a [routerLink]="['/dashboard']" routerLinkActive="active"><i class="bi bi-grid-1x2-fill"></i> Command Center</a></li>
+        <li><a [routerLink]="['/live-disaster-map']" routerLinkActive="active"><i class="bi bi-globe-americas"></i> Tactical Map</a></li>
+        <li><a [routerLink]="['/incident-reporting']" routerLinkActive="active"><i class="bi bi-megaphone-fill"></i> Dispatch Log</a></li>
+      </ul>
+
+      <div class="nav-section">Logistics</div>
+      <ul>
+        <li><a [routerLink]="['/resource-allocation']" routerLinkActive="active"><i class="bi bi-truck-flatbed"></i> Deployment</a></li>
+        <li><a [routerLink]="['/resource-overview']" routerLinkActive="active"><i class="bi bi-boxes"></i> Inventory</a></li>
+        <li><a [routerLink]="['/people-shelter-management']" routerLinkActive="active"><i class="bi bi-house-door-fill"></i> Shelters</a></li>
+      </ul>
+
+      <div class="nav-section">Support</div>
+      <ul>
+        <li><a [routerLink]="['/analytics-heatmaps']" routerLinkActive="active"><i class="bi bi-bar-chart-fill"></i> Analytics</a></li>
+        <li><a [routerLink]="['/calendar']" routerLinkActive="active"><i class="bi bi-calendar-event-fill"></i> Scheduler</a></li>
+        <li><a [routerLink]="['/customize-kit']" routerLinkActive="active"><i class="bi bi-backpack-fill"></i> Go-Bag Kit</a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="status-indicator">
+        <span class="dot"></span> System Nominal
+      </div>
+    </div>
+  </aside>
+}
 
     <!-- Content area -->
     <div class="content-area" [class.with-sidebar]="isAuthenticated">

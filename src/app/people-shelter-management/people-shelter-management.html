@@ -1,85 +1,138 @@
 <div class="container">
-  <!-- SHELTER OVERVIEW SECTION -->
-  <div class="shelter-container">
-    <div class="shelter-title">Shelter Overview</div>
-    <div class="table-wrapper">
-      <table class="shelter-table">
-        <thead>
-          <tr>
-            <th>Shelter Name</th>
-            <th>Status</th>
-            <th>Capacity</th>
-            <th>Occupancy</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Central Shelter</td>
-            <td><span class="badge open">Open</span></td>
-            <td>120/200</td>
-            <td><div class="progress-bar"><div style="width: 60%"></div></div></td>
-          </tr>
-          <tr>
-            <td>West Shelter</td>
-            <td><span class="badge full">Full</span></td>
-            <td>200/200</td>
-            <td><div class="progress-bar"><div style="width: 100%"></div></div></td>
-          </tr>
-          <tr>
-            <td>East Shelter</td>
-            <td><span class="badge open">Open</span></td>
-            <td>80/150</td>
-            <td><div class="progress-bar"><div style="width: 53.3%"></div></div></td>
-          </tr>
-          <tr>
-            <td>North Shelter</td>
-            <td><span class="badge closed">Closed</span></td>
-            <td>0/100</td>
-            <td><div class="progress-bar"><div style="width: 0%"></div></div></td>
-          </tr>
-          <tr>
-            <td>South Shelter</td>
-            <td><span class="badge open">Open</span></td>
-            <td>60/120</td>
-            <td><div class="progress-bar"><div style="width: 50%"></div></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="page-header">
+    <h2><i class="bi bi-house-door-fill"></i> People & Shelter Management</h2>
+    <p>Monitor evacuee density and manage shelter registrations in real-time.</p>
   </div>
 
-  <!-- PEOPLE IN SHELTERS SECTION -->
-  <div class="people-container">
-    <div class="people-title">People in Shelters</div>
-
-    <div class="people-list">
-      <div class="person-card" *ngFor="let person of people">
-        <img [src]="person.photo" alt="{{ person.name }}" class="person-photo">
-        <div class="person-info">
-          <h4>{{ person.name }}</h4>
-          <p>Age: {{ person.age }}</p>
-          <p>Status: <span class="status" [ngClass]="person.status">{{ person.status }}</span></p>
+  <div class="bento-grid">
+    <!-- Shelter Overview (Main Content) -->
+    <div class="analytics-chart col-span-2 row-span-2">
+      <div class="card-header">
+        <h3>Operational Shelters</h3>
+        <div class="matrix-actions">
+          <div class="search-shield">
+            <i class="bi bi-filter"></i>
+            <select [(ngModel)]="selectedShelterId" class="filter-select">
+              <option value="all">All Sectors</option>
+              @for (shelter of shelters; track shelter.id) {
+                <option [value]="shelter.id">{{ shelter.name }}</option>
+              }
+            </select>
+          </div>
         </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="shelter-table">
+          <thead>
+            <tr>
+              <th>Shelter Identity</th>
+              <th>Classification</th>
+              <th>Grid Status</th>
+              <th>Logistics Level</th>
+              <th>Occupancy Flux</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (shelter of filteredShelters; track shelter.id) {
+              <tr>
+                <td>{{ shelter.name }}</td>
+                <td>{{ shelter.type | titlecase }}</td>
+                <td>
+                  <span class="badge" [ngClass]="shelter.status">
+                    {{ shelter.status | titlecase }}
+                  </span>
+                </td>
+                <td>{{ shelter.capacity.occupied }} / {{ shelter.capacity.total }} Units</td>
+                <td>
+                  <div class="occupancy-box">
+                    <div class="progress-bar">
+                      <div class="progress-fill" 
+                        [style.width.%]="getOccupancyPercentage(shelter)"
+                        [style.background-color]="getOccupancyColor(shelter)">
+                      </div>
+                    </div>
+                    <span class="percent-label">{{ getOccupancyPercentage(shelter) | number:'1.0-0' }}%</span>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- ADD NEW PERSON FORM -->
-    <div class="add-person">
-      <h3>Add New Person</h3>
-      <form (ngSubmit)="addPerson()" #personForm="ngForm">
-        <input type="text" [(ngModel)]="newPerson.name" name="name" placeholder="Name" required>
-        <input type="number" [(ngModel)]="newPerson.age" name="age" placeholder="Age" required>
-        <select [(ngModel)]="newPerson.status" name="status" required>
-          <option disabled selected value="">Status</option>
-          <option value="safe">Safe</option>
-          <option value="missing">Missing</option>
-          <option value="injured">Injured</option>
-        </select>
-        <button type="submit" [disabled]="personForm.invalid">Add Person</button>
+    <!-- Quick Check-in (Side Card) -->
+    <div class="analytics-chart col-span-1 insights-card">
+      <div class="card-header">
+        <h3><i class="bi bi-person-plus-fill"></i> New Enrollment</h3>
+      </div>
+      
+      <form (ngSubmit)="addPerson()" #personForm="ngForm" class="bento-form">
+        <div class="form-group">
+          <input type="text" [(ngModel)]="newPerson.name" name="name" placeholder="Legal Full Name" required>
+        </div>
+        <div class="form-row">
+          <input type="number" [(ngModel)]="newPerson.age" name="age" placeholder="Age" required>
+          <select [(ngModel)]="newPerson.status" name="status" required>
+            <option value="safe">Nominal (Safe)</option>
+            <option value="injured">Triage (Injured)</option>
+            <option value="missing">Trace (Missing)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select [(ngModel)]="newPerson.shelterId" name="shelterId" required>
+            <option value="" disabled>Target Shelter Assignment</option>
+            @for (shelter of shelters; track shelter.id) {
+              <option [value]="shelter.id" [disabled]="shelter.status === 'full'">
+                {{ shelter.name }} {{ shelter.status === 'full' ? '(AT CAPACITY)' : '' }}
+              </option>
+            }
+          </select>
+        </div>
+        <button type="submit" class="submit-btn" [disabled]="personForm.invalid">
+          Commit Registration
+        </button>
       </form>
 
-      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
-      <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+      @if (errorMessage) { <div class="error-toast">{{ errorMessage }}</div> }
+      @if (successMessage) { <div class="success-toast">{{ successMessage }}</div> }
+    </div>
+
+    <!-- Occupants List (Full Width Bottom) -->
+    <div class="analytics-chart col-span-3">
+      <div class="card-header">
+        <h3>Current Manifest</h3>
+        <div class="matrix-actions">
+          <div class="search-shield">
+            <i class="bi bi-search"></i>
+            <input type="text" [(ngModel)]="searchQuery" placeholder="Filter manifest by name...">
+          </div>
+        </div>
+      </div>
+
+      <div class="occupants-grid">
+        @for (person of filteredPeople; track person.id) {
+          <div class="occupant-card">
+            <div class="avatar-container">
+              <img [src]="person.photo" [alt]="person.name" class="avatar">
+              <span class="status-dot" [ngClass]="person.status"></span>
+            </div>
+            <div class="occupant-info">
+              <h4>{{ person.name }}</h4>
+              <p class="age-meta">{{ person.age }}y • Entry: {{ person.checkInDate | date:'shortTime' }}</p>
+              <div class="shelter-tag">
+                <i class="bi bi-geo-alt-fill"></i> {{ (shelters | filterById: person.shelterId)?.name || 'Assigning...' }}
+              </div>
+            </div>
+            <button class="action-btn delete" (click)="removePerson(person.id)" title="Release from Shelter">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </div>
+        } @empty {
+          <div class="empty-state">No occupant data synchronized for current query.</div>
+        }
+      </div>
     </div>
   </div>
 </div>

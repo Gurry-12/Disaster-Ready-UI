@@ -1,43 +1,109 @@
-<div class="container">
-  <div class="resource-container">
-    <div class="resource-title">Resource Overview</div>
-    <div class="table-wrapper">
-      <table class="resource-table">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Water</td>
-            <td><span class="badge available">Available</span></td>
-            <td>500</td>
-          </tr>
-          <tr>
-            <td>Food</td>
-            <td><span class="badge deployed">Deployed</span></td>
-            <td>200</td>
-          </tr>
-          <tr>
-            <td>Medical Kits</td>
-            <td><span class="badge available">Available</span></td>
-            <td>120</td>
-          </tr>
-          <tr>
-            <td>Blankets</td>
-            <td><span class="badge transit">In Transit</span></td>
-            <td>300</td>
-          </tr>
-          <tr>
-            <td>Generators</td>
-            <td><span class="badge deployed">Deployed</span></td>
-            <td>15</td>
-          </tr>
-        </tbody>
-      </table>
+<div class="allocation-page">
+  <div class="page-header">
+    <h2>⚡ Resource Deployment</h2>
+    <p>Strategically assign mission-critical inventory to active incident zones.</p>
+  </div>
+
+  <div class="allocation-grid">
+    <!-- Step 1: Select Incident -->
+    <div class="step-card col-span-1">
+      <div class="card-header">
+        <span class="step-num">01</span>
+        <h3>Target Incident</h3>
+      </div>
+      <div class="picker-list">
+        @for (incident of (incidents$ | async); track incident.id) {
+          <div 
+            class="picker-item incident-tile" 
+            [class.selected]="selectedIncidentId === incident.id"
+            (click)="selectIncident(incident.id)">
+            <div class="tile-icon">
+              <i class="bi" [ngClass]="getIconForIncident(incident.type)"></i>
+              <span class="severity-dot" [ngClass]="incident.severity"></span>
+            </div>
+            <div class="tile-info">
+              <h4>{{ incident.title }}</h4>
+              <span class="city"><i class="bi bi-geo-alt"></i> {{ incident.location.city || 'Alpha Zone' }}</span>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">No active incidents found.</div>
+        }
+      </div>
+    </div>
+
+    <!-- Step 2: Select Resource -->
+    <div class="step-card col-span-1">
+      <div class="card-header">
+        <span class="step-num">02</span>
+        <h3>Available Resources</h3>
+      </div>
+      <div class="picker-list">
+        @for (resource of (resources$ | async); track resource.id) {
+          <div 
+            class="picker-item resource-tile" 
+            [class.selected]="selectedResourceId === resource.id"
+            (click)="selectResource(resource.id)">
+            <div class="tile-icon">
+              <i class="bi" [ngClass]="getTypeIcon(resource.type)"></i>
+            </div>
+            <div class="tile-info">
+              <h4>{{ resource.name }}</h4>
+              <span class="stock">{{ resource.quantity }} {{ resource.unit }} left</span>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">No available stocks matching criteria.</div>
+        }
+      </div>
+    </div>
+
+    <!-- Step 3: Deployment Details -->
+    <div class="step-card col-span-1 action-panel">
+      <div class="card-header">
+        <span class="step-num">03</span>
+        <h3>Deployment Plan</h3>
+      </div>
+      
+      <div class="allocation-summary">
+        @if (!selectedIncidentId || !selectedResourceId) {
+          <div class="summary-placeholder">
+            <i class="bi bi-cursor-fill"></i>
+            <p>Select an incident and a resource to begin deployment.</p>
+          </div>
+        } @else {
+          <div class="summary-details">
+            <div class="deployment-path">
+              <div class="node">
+                <i class="bi bi-box-seam"></i>
+                <small>Deploying</small>
+              </div>
+              <div class="arrow"></div>
+              <div class="node">
+                <i class="bi bi-geo-fill"></i>
+                <small>Target</small>
+              </div>
+            </div>
+
+            <div class="quantity-control">
+              <label>Set Deployment Quantity</label>
+              <div class="q-input-group">
+                <button (click)="quantity = quantity > 1 ? quantity - 1 : 1">-</button>
+                <input type="number" [(ngModel)]="quantity" min="1">
+                <button (click)="quantity = quantity + 1">+</button>
+              </div>
+            </div>
+
+            <button class="confirm-btn" (click)="allocate()" [disabled]="isSubmitting">
+              @if (isSubmitting) {
+                <span class="spinner-sm"></span> Initializing...
+              } @else {
+                Authorize Deployment
+              }
+            </button>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>
